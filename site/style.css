@@ -38,8 +38,10 @@
 .estimate-switches{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
 .estimate-switches .billing-filter{margin:15px 0 5px}
 .estimate-cost{min-width:125px}
-.estimate-usd{display:flex;align-items:center;justify-content:flex-end;font-weight:790;font-size:13px;color:#164b61;font-variant-numeric:tabular-nums}
-.estimate-twd{display:block;font-size:10px;color:#8298a7;font-variant-numeric:tabular-nums;line-height:1.9;white-space:nowrap}
+.estimate-money{display:flex;align-items:center;justify-content:flex-end;font-weight:790;font-size:13px;color:#164b61;font-variant-numeric:tabular-nums}
+.currency-filter .billing-option:disabled{opacity:.46;cursor:not-allowed}
+.estimate-peers .estimate-peer-price .price-with-info{justify-content:flex-end;gap:4px}
+.estimate-peers .estimate-peer-price .fee-info-button{width:15px;height:15px;font-size:10px;line-height:13px}
 .estimate-unsupported{display:block;color:#9daeb9;font-size:16px}
 .estimate-muted{display:block;color:#9facb8;font-size:9px;max-width:150px;overflow:hidden;text-overflow:ellipsis}
 .fx-stat{font-size:26px}

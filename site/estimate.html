@@ -78,7 +78,7 @@
 
     <section class="main-card" id="prices">
       <div class="section-intro"><div><div class="section-kicker">ALL PROVIDERS</div><h2>全部平台費用比較</h2>
-        <p>每欄為固定請求用量的累計費用；美金與新臺幣同時顯示。</p></div>
+        <p>每欄為固定請求用量的累計費用；可切換美金或新臺幣顯示。</p></div>
         <div class="mini-caption">低價不代表模型能力相同</div></div>
       <div class="filters">
         <div class="family-chips" id="families" role="group" aria-label="模型系列">
@@ -102,6 +102,13 @@
             <div class="billing-switch" id="cacheSwitch" role="group" aria-label="快取情境">
               <button class="billing-option active" type="button" data-cache="miss" aria-pressed="true">未命中</button>
               <button class="billing-option" type="button" data-cache="hit" aria-pressed="false">命中 Cache</button>
+            </div>
+          </div>
+          <div class="billing-filter currency-filter">
+            <span class="billing-label">顯示幣別</span>
+            <div class="billing-switch" id="currencySwitch" role="group" aria-label="費用顯示幣別">
+              <button class="billing-option active" type="button" data-currency="USD" aria-pressed="true">美金 USD</button>
+              <button class="billing-option" id="currencyTWD" type="button" data-currency="TWD" aria-pressed="false" disabled title="等待參考匯率載入">新臺幣 TWD</button>
             </div>
           </div>
         </div>

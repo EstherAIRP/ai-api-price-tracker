@@ -97,8 +97,8 @@ function feeButton() {
 }
 function appendPrice(node, quote, value) {
   const wrap = el('span', 'price-with-info');
-  wrap.append(el('span', '', dollars(value)));
   if (quote.provider === 'OpenRouter') wrap.append(feeButton());
+  wrap.append(el('span', '', dollars(value)));
   node.append(wrap);
 }
 

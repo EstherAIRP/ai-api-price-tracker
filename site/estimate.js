@@ -3,7 +3,7 @@
 const $ = id => document.getElementById(id);
 const core = window.CostCore;
 const state = {quotes:[], policies:null, fx:null, family:'all', search:'', provider:'all',
-  plan:'standard', cache:'miss', sort:'cost1', selected:null, published:null};
+  plan:'standard', cache:'miss', currency:'USD', sort:'cost1', selected:null, published:null};
 const ids = {prompt:'promptTokens', user:'userTokens', rag:'ragTokens',
   output:'outputTokens', historyPer:'historyPerTokens', historyCount:'historyCount'};
 let activeTooltip = null;
@@ -38,6 +38,11 @@ function quoteCost(quote, inputs, n) {
     plan:state.plan, policies:state.policies, cache:state.cache
   }, n);
 }
+function displayMoney(usd) {
+  return state.currency === 'TWD'
+    ? core.formatTWD(usd, state.fx && state.fx.rate)
+    : core.formatUSD(usd);
+}
 function moneyWrap(cell, quote, outcome) {
   if (!outcome.ok) {
     const msg = outcome.reason === 'cache_unavailable' ? '沒有公開快取讀取報價' :
@@ -48,10 +53,10 @@ function moneyWrap(cell, quote, outcome) {
     cell.append(detail);
     return;
   }
-  const line = el('span','price-with-info estimate-usd');
-  line.append(el('span','',core.formatUSD(outcome.total)));
+  const line = el('span','price-with-info estimate-money');
   if (quote.provider === 'OpenRouter') line.append(feeButton());
-  cell.append(line, el('span','estimate-twd',core.formatTWD(outcome.total, state.fx && state.fx.rate)));
+  line.append(el('span','',displayMoney(outcome.total)));
+  cell.append(line);
 }
 function hideTooltip() {
   const bubble = $('feePopover');
@@ -122,6 +127,10 @@ function setupListeners() {
   $('cacheSwitch').addEventListener('click',event=>{
     const button = event.target.closest('[data-cache]');
     if (button) setChoice('cacheSwitch','[data-cache]',button.dataset.cache,'cache');
+  });
+  $('currencySwitch').addEventListener('click',event=>{
+    const button = event.target.closest('[data-currency]:not(:disabled)');
+    if (button) setChoice('currencySwitch','[data-currency]',button.dataset.currency,'currency');
   });
   $('search').addEventListener('input',event=>{state.search=event.target.value.trim().toLowerCase();render();});
   $('provider').addEventListener('change',event=>{state.provider=event.target.value;render();});
@@ -214,10 +223,9 @@ function renderTable(inputs) {
     $('emptyText').textContent='請調整搜尋、模型系列或平台篩選。';
   }
 }
-function detailLine(label, usd, times) {
+function detailLine(label, usd) {
   const row=el('div','estimate-detail-line');
-  row.append(el('span','',label),el('strong','',core.formatUSD(usd)));
-  if(state.fx) row.append(el('small','',core.formatTWD(usd,state.fx.rate)));
+  row.append(el('span','',label),el('strong','',displayMoney(usd)));
   return row;
 }
 function renderDetail(inputs) {
@@ -252,7 +260,7 @@ function renderDetail(inputs) {
     const totals=el('div','estimate-round-summary');
     for(const n of [1,10,50]){
       const box=el('div','estimate-round-item');
-      box.append(el('span','',n+' 次'),el('strong','',core.formatUSD(one.total*n)),el('small','',core.formatTWD(one.total*n,state.fx&&state.fx.rate)));
+      box.append(el('span','',n+' 次'),el('strong','',displayMoney(one.total*n)));
       totals.append(box);
     }
     body.append(totals);
@@ -271,7 +279,9 @@ function renderDetail(inputs) {
     tr.append(el('td','',q.provider));
     for(const n of [1,10,50]){
       const r=quoteCost(q,inputs,n);
-      tr.append(el('td','',r.ok?core.formatUSD(r.total):'—'));
+      const costCell=el('td','estimate-peer-price');
+      moneyWrap(costCell,q,r);
+      tr.append(costCell);
     }
     rows.append(tr);
   }
@@ -306,6 +316,8 @@ async function loadFx() {
       const ageMs = Date.now() - new Date(fx.date+'T00:00:00Z').getTime();
       if (url.startsWith('./') && (!Number.isFinite(ageMs) || ageMs > 7 * 86400000)) continue;
       state.fx=Object.assign({},fx,{source:fx.source||url});
+      $('currencyTWD').disabled=false;
+      $('currencyTWD').removeAttribute('title');
       $('statFX').textContent=fx.rate.toFixed(3);
       $('fxStamp').textContent='1 USD ≈ '+fx.rate.toFixed(3)+' TWD · '+fx.date;
       $('rateFooter').textContent='1 USD ≈ '+fx.rate.toFixed(4)+' TWD（'+fx.date+'）· 僅供參考，不含匯差、稅及未建檔的平台費';
