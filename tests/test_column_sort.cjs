@@ -47,7 +47,7 @@ function makeHeader(key){
   };
 }
 for(const [file,func,column] of [
- ['app.js','filteredQuotes','input'],
+ ['app.js','filteredQuotes()','input'],
  ['estimate.js','visibleQuotes({})','cost10']
 ]){
   test(file+' toggles numeric column ascending / descending',()=>{
