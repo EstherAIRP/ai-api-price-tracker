@@ -7,6 +7,8 @@ on:
       - 'scripts/**'
       - 'tests/**'
       - 'site/app.js'
+      - 'site/fees.js'
+      - 'site/data/provider-fees.json'
       - '.github/workflows/ci.yml'
   pull_request:
     branches: [main]
@@ -27,4 +29,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --check site/app.js
+      - run: node --check site/app.js && node --check site/fees.js && node --test tests/test_fees.cjs

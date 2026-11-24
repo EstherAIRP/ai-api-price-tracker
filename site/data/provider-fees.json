@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "last_verified_at": "2026-11-24",
+  "notes": "僅收錄已查核的明確平台費率；未收錄不等於零手續費。這是獨立於每日模型單價的人工核對政策快照。",
+  "providers": {
+    "OpenRouter": {
+      "source": "https://openrouter.ai/pricing",
+      "payment_terms_source": "https://openrouter.ai/blog/simplifying-our-platform-fee/",
+      "verification": "official_pricing_page",
+      "standard": {
+        "credit_purchase_rate": 0.055,
+        "minimum_fee_usd": 0.8,
+        "payment_method": "non_crypto"
+      },
+      "business": {
+        "credit_purchase_rate": 0.08,
+        "payment_method": "non_crypto"
+      },
+      "byok": {
+        "standard_business_monthly_free_inference_usd": 25000,
+        "excess_rate": 0.05
+      },
+      "enterprise": {
+        "custom_contract": true
+      }
+    }
+  }
+}

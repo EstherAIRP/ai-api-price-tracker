@@ -8,6 +8,7 @@
   <meta name="description" content="GPT、Gemini、Claude、DeepSeek、Grok 的 AI API 價格比較與歷史變動追蹤。">
   <title>API Atlas — AI API 價格追蹤</title>
   <link rel="stylesheet" href="./style.css">
+  <script src="./fees.js" defer></script>
   <script src="./app.js" defer></script>
 </head>
 <body>
@@ -22,7 +23,7 @@
         <a href="#comparison">模型比較</a>
         <a href="#about">資料說明</a>
       </nav>
-      <a class="top-link" href="https://github.com/TwinkleStars1029/ai-api-price-tracker" target="_blank" rel="noopener noreferrer" id="repoLink">GitHub <span aria-hidden="true">↗</span></a>
+      <a class="top-link" href="https://github.com/EstherAIRP/ai-api-price-tracker" target="_blank" rel="noopener noreferrer" id="repoLink">GitHub <span aria-hidden="true">↗</span></a>
     </header>
     <main>
       <section class="hero" aria-labelledby="mainTitle">
@@ -64,15 +65,36 @@
             <label class="select-wrap"><span>排序</span><select id="sort"><option value="model">模型名稱</option><option value="input">輸入價格 ↑</option><option value="output">輸出價格 ↑</option><option value="total">合計價格 ↑</option></select></label>
           </div>
         </div>
-        <div class="table-scroll"><table id="priceTable"><thead><tr><th>模型 / 系列</th><th>API 供應平台</th><th class="num">輸入 / 百萬</th><th class="num">輸出 / 百萬</th><th class="num">合計 / 百萬</th><th>資料來源</th><th></th></tr></thead><tbody id="priceRows"></tbody></table></div>
+        <div class="table-scroll"><table id="priceTable"><thead><tr><th>模型 / 系列</th><th>API 供應平台</th><th class="num">輸入 / 百萬</th><th class="num">輸出 / 百萬</th><th class="num">合計 / 百萬</th><th>平台費率</th><th>資料來源</th><th></th></tr></thead><tbody id="priceRows"></tbody></table></div>
         <div class="empty-state" id="emptyState" hidden><div class="empty-icon" aria-hidden="true">◇</div><h3 id="emptyTitle">尚無價格資料</h3><p id="emptyText">請先執行第一次「full」更新，資料通過驗證後會自動顯示在此。</p></div>
-        <footer class="table-footer"><span id="shownCount">0 筆報價</span><span>價格不含稅、支付手續費及特殊計費級距</span></footer>
+        <footer class="table-footer"><span id="shownCount">0 筆報價</span><span>牌價不含平台費、稅金及特殊計費級距，平台費另列</span></footer>
       </section>
       <section id="comparison" class="detail-layout" aria-labelledby="detailTitle">
         <div class="detail-card"><div class="section-kicker">MODEL COMPARISON</div><h2 id="detailTitle">挑選模型，查看各平台報價</h2><p class="subtle">點選上方任一模型列，即可查看同一模型在其他平台的價格。</p><div id="modelDetail" class="detail-empty"><span aria-hidden="true">◎</span><p>等待選取模型</p></div></div>
-        <div class="detail-card calculator"><div class="section-kicker">COST SIMULATOR</div><h2>使用成本試算</h2><p class="subtle">依選取的單筆報價，估算文字 Token 使用成本。</p><div class="calc-grid"><label>輸入 Token 數<input id="inputTokens" type="number" min="0" max="10000000000" value="1000000"></label><label>輸出 Token 數<input id="outputTokens" type="number" min="0" max="10000000000" value="300000"></label></div><div class="calc-label" id="calcModel">請先選擇模型</div><div class="calc-price" id="calcPrice">—</div><div class="calc-note">美元估算 · 不包含快取、服務費與分級計價</div><div class="chart-wrap"><div class="chart-head"><strong>近 180 天價格變動</strong><span>輸入 / 百萬 Token</span></div><svg id="trendChart" role="img" aria-label="選取模型的價格歷史走勢圖" viewBox="0 0 480 120" preserveAspectRatio="none"></svg><p class="chart-placeholder" id="chartPlaceholder">尚無歷史紀錄</p></div></div>
+        <div class="detail-card calculator"><div class="section-kicker">COST SIMULATOR</div><h2>使用成本試算</h2><p class="subtle">依選取的單筆報價，估算文字 Token 使用成本。</p><div class="calc-grid"><label>輸入 Token 數<input id="inputTokens" type="number" min="0" max="10000000000" value="1000000"></label><label>輸出 Token 數<input id="outputTokens" type="number" min="0" max="10000000000" value="300000"></label></div><div class="calc-label" id="calcModel">請先選擇模型</div><div class="calc-price" id="calcPrice">—</div><div class="calc-note">上述為模型推論牌價，不含平台費、稅、快取與分級計價。</div>
+          <section class="fee-panel" id="feePanel" aria-label="平台服務費試算">
+            <div class="fee-panel-title"><strong>平台手續費與付款試算</strong><span id="feePolicyDate">依政策資料</span></div>
+            <p class="fee-info" id="feeNonOpenRouter">目前僅建檔 OpenRouter 的平台手續費。未建檔不表示免費。</p>
+            <div id="openRouterFeePanel" hidden>
+              <label class="fee-select-label">OpenRouter 計費方式
+                <select id="feeMode"><option value="standard">Standard — 儲值點數</option><option value="business">Business — 儲值點數</option><option value="byok">BYOK — 自帶金鑰</option><option value="enterprise">Enterprise — 合約價格</option></select>
+              </label>
+              <div id="feeTopupControls" class="fee-controls">
+                <label>本次購買點數（USD）<input id="creditAmount" type="number" min="0.01" max="100000000" step="any" value="100" inputmode="decimal"></label>
+                <p class="fee-help">僅試算非加密貨幣儲值。費用在購買點數時支付，不是每次推論再抽成。</p>
+              </div>
+              <div id="feeByokControls" class="fee-controls" hidden>
+                <label>本月先前 BYOK 牌價用量（USD）<input id="byokPrior" type="number" min="0" max="1000000000" step="any" value="0" inputmode="decimal"></label>
+                <p class="fee-help">本次模型牌價僅作為 BYOK 估算基準，原廠實際計費可能不同；OpenRouter 平台費另從點數扣除。</p>
+              </div>
+              <div class="fee-result" id="feeResult" aria-live="polite"></div>
+              <div class="fee-help" id="feeDisclaimer">示意估算，未含稅金、付款差異及其他費率。</div>
+              <a id="feeSource" class="fee-source" target="_blank" rel="noopener noreferrer" href="https://openrouter.ai/pricing">官方方案及費率 ↗</a>
+            </div>
+          </section>
+          <div class="chart-wrap"><div class="chart-head"><strong>近 180 天價格變動</strong><span>輸入 / 百萬 Token</span></div><svg id="trendChart" role="img" aria-label="選取模型的價格歷史走勢圖" viewBox="0 0 480 120" preserveAspectRatio="none"></svg><p class="chart-placeholder" id="chartPlaceholder">尚無歷史紀錄</p></div></div>
       </section>
-      <section id="about" class="note-card"><div><div class="section-kicker">DATA TRANSPARENCY</div><h2>資料如何取得？</h2></div><div class="note-copy"><p><strong>平台 API 報價</strong>：直接讀取 OpenRouter 提供的模型計價資料；若該來源拒絕存取，系統會保留前次有效值並顯示過期狀態。</p><p><strong>社群彙整參考</strong>：其餘供應平台使用 Models.dev 公開資料。標示「官方通路」代表可向開發商直接購買，<em>不代表已從官方價格頁逐項查核</em>。</p><p><strong>每天自動更新</strong>：09:00 蒐集、12:00 發布；來源失敗或異常價格不會覆蓋有效舊值。個別供應商的批次、快取及促銷費率可能不同，實際購買前應點選官網核對。</p></div></section>
+      <section id="about" class="note-card"><div><div class="section-kicker">DATA TRANSPARENCY</div><h2>資料如何取得？</h2></div><div class="note-copy"><p><strong>平台 API 報價</strong>：直接讀取 OpenRouter 提供的模型計價資料；若該來源拒絕存取，系統會保留前次有效值並顯示過期狀態。</p><p><strong>社群彙整參考</strong>：其餘供應平台使用 Models.dev 公開資料。標示「官方通路」代表可向開發商直接購買，<em>不代表已從官方價格頁逐項查核</em>。</p><p><strong>平台手續費</strong>：手續費採獨立政策資料，記錄最近人工核對日期；模型價格每日更新不代表平台費率也已每日核實。<a href="https://openrouter.ai/pricing" target="_blank" rel="noopener noreferrer">OpenRouter 官方定價</a>。</p><p><strong>每天自動更新</strong>：09:00 蒐集、12:00 發布；來源失敗或異常價格不會覆蓋有效舊值。個別供應商的批次、快取及促銷費率可能不同，實際購買前應點選官網核對。</p></div></section>
     </main>
     <footer class="site-footer"><span>© API Atlas · Public price transparency</span><span>資料僅供比較參考，實際費用以供應商結帳資訊為準。</span></footer>
   </div>

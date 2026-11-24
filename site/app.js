@@ -2,7 +2,7 @@
 
 const state = {
   quotes: [], history: [], family: 'all', search: '', provider: 'all',
-  sort: 'model', selectedQuoteId: null,
+  sort: 'model', selectedQuoteId: null, feePolicies: null,
 };
 const $ = id => document.getElementById(id);
 const dollars = value => {
@@ -46,6 +46,9 @@ function setupListeners() {
   $('sort').addEventListener('change', event => { state.sort = event.target.value; renderTable(); });
   $('inputTokens').addEventListener('input', renderCalculator);
   $('outputTokens').addEventListener('input', renderCalculator);
+  $('feeMode').addEventListener('change', renderCalculator);
+  $('creditAmount').addEventListener('input', renderCalculator);
+  $('byokPrior').addEventListener('input', renderCalculator);
 }
 
 function filteredQuotes() {
@@ -90,12 +93,15 @@ function renderTable() {
     const inputCell = el('td', 'num dollar', dollars(q.input_usd_m));
     const outputCell = el('td', 'num dollar', dollars(q.output_usd_m));
     const totalCell = el('td', 'num sum', dollars(q.input_usd_m + q.output_usd_m));
+    const feeCell = el('td', 'fee-table-cell');
+    feeCell.append(el('span', q.provider === 'OpenRouter' && state.feePolicies?.providers?.OpenRouter ? 'fee-known' : 'fee-unknown',
+      q.provider === 'OpenRouter' && state.feePolicies?.providers?.OpenRouter ? '儲值 5.5% 起 · 詳情' : '未建檔'));
     const sourceCell = el('td');
     const src = el('span', 'source-tag' + (q.verification === 'provider_api' ? ' direct' : '') + (q.status !== 'current' ? ' stale' : ''),
       q.status === 'anomaly_hold' ? '異常暫緩' : q.status === 'stale' ? '前次有效值' : q.verification === 'provider_api' ? '平台 API' : '社群彙整');
     sourceCell.append(src);
     const arrow = el('td', 'open-arrow', '↗');
-    tr.append(modelCell, providerCell, inputCell, outputCell, totalCell, sourceCell, arrow);
+    tr.append(modelCell, providerCell, inputCell, outputCell, totalCell, feeCell, sourceCell, arrow);
     const choose = () => { state.selectedQuoteId = q.id; renderTable(); renderDetail();
       if (window.matchMedia('(max-width: 750px)').matches) $('comparison').scrollIntoView({behavior:'smooth'});
     };
@@ -123,14 +129,14 @@ function renderDetail() {
   const table = el('table', 'mini-table');
   const thead = el('thead');
   const headerRow = el('tr');
-  for (const name of ['平台', '輸入', '輸出', '來源']) headerRow.append(el('th', '', name));
+  for (const name of ['平台', '輸入', '輸出', '平台費', '來源']) headerRow.append(el('th', '', name));
   thead.append(headerRow);
   const tbody = el('tbody');
   for (const q of peers) {
     const row = el('tr');
     if (q.id === chosen.id) row.className = 'selected';
     row.append(el('td', '', q.provider), el('td', '', dollars(q.input_usd_m)),
-      el('td', '', dollars(q.output_usd_m)));
+      el('td', '', dollars(q.output_usd_m)), el('td', '', q.provider === 'OpenRouter' && state.feePolicies?.providers?.OpenRouter ? '儲值 5.5% 起' : '未建檔'));
     const anchorCell = el('td');
     const a = el('a', '', '報價 ↗');
     a.href = safeLink(q.source_url); a.target = '_blank'; a.rel = 'noopener noreferrer';
@@ -144,17 +150,74 @@ function renderDetail() {
   renderCalculator();
   renderChart(chosen);
 }
+function positiveNumberInput(id, allowZero = true) {
+  const raw = $(id).value.trim();
+  if (!raw) return null;
+  const value = Number(raw);
+  return Number.isFinite(value) && (allowZero ? value >= 0 : value > 0) ? value : null;
+}
+function addFeeRow(parent, name, value, strong = false) {
+  const row = el('div', 'fee-result-row' + (strong ? ' strong' : ''));
+  row.append(el('span', '', name), el('b', '', value));
+  parent.append(row);
+}
+function renderFeeCalculator(chosen, inference) {
+  const feeConfig = state.feePolicies?.providers?.OpenRouter;
+  const isRouter = chosen?.provider === 'OpenRouter' && feeConfig;
+  $('openRouterFeePanel').hidden = !isRouter;
+  $('feeNonOpenRouter').hidden = !!isRouter;
+  $('feeNonOpenRouter').textContent = chosen?.provider === 'OpenRouter'
+    ? '平台費率資料載入失敗，請以官方價格頁為準。'
+    : '目前僅建檔 OpenRouter 的手續費；其他平台「未建檔」不等於免費。';
+  if (!isRouter) return;
+  const mode = $('feeMode').value;
+  const byok = mode === 'byok';
+  const enterprise = mode === 'enterprise';
+  $('feeTopupControls').hidden = byok || enterprise;
+  $('feeByokControls').hidden = !byok;
+  $('feeDisclaimer').textContent = byok
+    ? '估算採 OpenRouter 公開模型牌價作為參考；原廠帳單、平台費的儲值成本及稅額另計。'
+    : '儲值金額是購買點數的付款試算，不能和單次 Token 使用成本相加當作相同支出。';
+  const out = $('feeResult');
+  out.replaceChildren();
+  if (enterprise) {
+    out.append(el('p', 'fee-help', 'Enterprise 依個別合約計價，無法用固定比例推估。'));
+    return;
+  }
+  if (inference === null) {
+    out.append(el('p', 'fee-error', '請先輸入有效的 Token 數量。'));
+    return;
+  }
+  if (byok) {
+    const prior = positiveNumberInput('byokPrior');
+    const result = prior === null ? null : window.ApiFees.byok(inference, prior, feeConfig.byok);
+    if (!result) { out.append(el('p', 'fee-error', '請輸入有效的本月 BYOK 先前用量。')); return; }
+    addFeeRow(out, '本次模型牌價估算', dollars(result.listPriceCost));
+    addFeeRow(out, '本次超出免費額度的用量', dollars(result.newExcess));
+    addFeeRow(out, 'OpenRouter 額外平台費 (5%)', dollars(result.fee));
+    addFeeRow(out, '推論＋平台費參考合計', dollars(result.totalEstimate), true);
+    return;
+  }
+  const credits = positiveNumberInput('creditAmount', false);
+  const rule = feeConfig[mode];
+  const result = credits === null || credits > 1e8 ? null : window.ApiFees.topup(credits, rule);
+  if (!result) { out.append(el('p', 'fee-error', '請輸入有效的儲值點數金額。')); return; }
+  addFeeRow(out, '購買點數', dollars(result.credits));
+  addFeeRow(out, `儲值手續費 (${(rule.credit_purchase_rate*100).toFixed(1)}%)`, dollars(result.fee));
+  addFeeRow(out, '本次儲值預計付款', dollars(result.payment), true);
+  out.append(el('p', 'fee-help', `本次選定模型的 Token 推論估算為 ${dollars(inference)}，使用時從點數餘額扣除。`));
+}
 function renderCalculator() {
   const chosen = state.quotes.find(q => q.id === state.selectedQuoteId);
-  if (!chosen) { $('calcPrice').textContent = '—'; return; }
-  const inp = Number($('inputTokens').value);
-  const out = Number($('outputTokens').value);
-  if (![inp,out].every(v => Number.isFinite(v) && v >= 0 && v <= 1e10)) {
-    $('calcPrice').textContent = '輸入數量無效'; return;
-  }
-  const total = chosen.input_usd_m * inp / 1e6 + chosen.output_usd_m * out / 1e6;
-  $('calcPrice').textContent = dollars(total);
+  if (!chosen) { $('calcPrice').textContent = '—'; renderFeeCalculator(null, null); return; }
+  const inp = positiveNumberInput('inputTokens');
+  const out = positiveNumberInput('outputTokens');
+  const total = inp === null || out === null || inp > 1e10 || out > 1e10 ? null
+    : window.ApiFees.inferenceCost(chosen, inp, out);
+  $('calcPrice').textContent = total === null ? '輸入數量無效' : dollars(total);
+  renderFeeCalculator(chosen, total);
 }
+
 function renderChart(chosen) {
   const svg = $('trendChart'); svg.replaceChildren();
   const events = state.history.filter(e => e.id === chosen.id && typeof e.input_usd_m === 'number' && e.at)
@@ -181,13 +244,23 @@ function renderChart(chosen) {
 async function init() {
   setupListeners();
   try {
-    const [pricesResponse, historyResponse] = await Promise.all([
+    const [pricesResponse, historyResponse, feeResponse] = await Promise.all([
       fetch('./data/prices.json', {cache:'no-store'}),
       fetch('./data/history.json', {cache:'no-store'}),
+      fetch('./data/provider-fees.json', {cache:'no-store'}),
     ]);
     if (!pricesResponse.ok || !historyResponse.ok) throw new Error('HTTP status error');
     const prices = await pricesResponse.json();
     const history = await historyResponse.json();
+    if (feeResponse.ok) {
+      try {
+        const policies = await feeResponse.json();
+        if (policies?.schema_version === 1 && policies.providers?.OpenRouter) {
+          state.feePolicies = policies;
+          $('feePolicyDate').textContent = `政策核對：${policies.last_verified_at}`;
+        }
+      } catch (e) { console.warn('Fee policy unavailable:', e); }
+    }
     if (!Array.isArray(prices.quotes) || !Array.isArray(history.events)) throw new Error('Unexpected data schema');
     state.quotes = prices.quotes;
     state.history = history.events;
