@@ -92,3 +92,12 @@
 .price-with-info .fee-info-placeholder{width:16px;height:16px;flex:0 0 16px;visibility:hidden;pointer-events:none}
 .estimate-cost .price-with-info,.estimate-peer-price .price-with-info{justify-content:flex-end}
 .estimate-detail-line .money-number,.estimate-round-item .money-number{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+/* Sort directly from column headings; preserve numeric alignment and mobile scroll. */
+.sort-button{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:0;margin:0;border:0;background:transparent;color:inherit;font:inherit;font-weight:inherit;letter-spacing:inherit;text-transform:inherit;white-space:nowrap;cursor:pointer;text-align:inherit}
+.sort-button:hover,.sort-button:focus-visible{color:#137e90}
+.sort-button:focus-visible{outline:2px solid #68aeba;outline-offset:3px;border-radius:3px}
+.sort-indicator{display:inline-flex;width:13px;align-items:center;justify-content:center;color:#a5b6c1;font-size:13px;font-weight:850;line-height:1}
+th[aria-sort="ascending"] .sort-button,th[aria-sort="descending"] .sort-button{color:#116f80}
+th[aria-sort="ascending"] .sort-indicator,th[aria-sort="descending"] .sort-indicator{color:#138496}
+th.num .sort-button{margin-left:auto}

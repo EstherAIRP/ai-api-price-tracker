@@ -115,20 +115,14 @@
         <div class="filter-controls">
           <label class="search"><span aria-hidden="true">⌕</span><input id="search" placeholder="搜尋模型或平台…" aria-label="搜尋模型或平台" autocomplete="off"></label>
           <label class="select-wrap"><span>平台</span><select id="provider"><option value="all">全部平台</option></select></label>
-          <label class="select-wrap"><span>排序</span><select id="sort">
-            <option value="cost1">1 次最低價</option>
-            <option value="cost10">10 次最低價</option>
-            <option value="cost50">50 次最低價</option>
-            <option value="model">模型名稱</option>
-            <option value="costHigh">費用由高到低</option>
-          </select></label>
+
         </div>
         <p class="billing-note">命中情境假設每次請求的「固定 Prompt＋歷史訊息」都已預先快取並成功命中；RAG 與新輸入以一般價格計算。無快取讀取報價者顯示「—」。</p>
       </div>
       <div class="load-notice" id="loadNotice" role="status" aria-live="polite">正在載入模型與平台價格…</div>
       <div class="table-scroll"><table id="estimateTable">
-        <thead><tr><th>模型 / 系列</th><th>API 供應平台</th>
-          <th class="num">1 次</th><th class="num">10 次</th><th class="num">50 次</th><th>資料來源</th><th></th></tr></thead>
+        <thead><tr><th data-sort-header="model" aria-sort="none"><button type="button" class="sort-button" data-sort="model">模型 / 系列<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th data-sort-header="provider" aria-sort="none"><button type="button" class="sort-button" data-sort="provider">API 供應平台<span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+          <th class="num" data-sort-header="cost1" aria-sort="ascending"><button type="button" class="sort-button" data-sort="cost1">1 次<span class="sort-indicator" aria-hidden="true">↑</span></button></th><th class="num" data-sort-header="cost10" aria-sort="none"><button type="button" class="sort-button" data-sort="cost10">10 次<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th class="num" data-sort-header="cost50" aria-sort="none"><button type="button" class="sort-button" data-sort="cost50">50 次<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th data-sort-header="source" aria-sort="none"><button type="button" class="sort-button" data-sort="source">資料來源<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th aria-label="開啟詳情"></th></tr></thead>
         <tbody id="estimateRows"></tbody>
       </table></div>
       <div class="empty-state" id="emptyState" hidden><div class="empty-icon">◇</div><h3 id="emptyTitle">尚無可比較資料</h3><p id="emptyText">請調整篩選條件。</p></div>

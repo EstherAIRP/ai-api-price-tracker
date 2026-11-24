@@ -2,7 +2,7 @@
 
 const state = {
   quotes: [], history: [], family: 'all', search: '', provider: 'all',
-  sort: 'model', selectedQuoteId: null, feePolicies: null, plan: 'standard',
+  sort: 'model', sortDir: 'asc', selectedQuoteId: null, feePolicies: null, plan: 'standard',
 };
 const $ = id => document.getElementById(id);
 // Display only: the underlying numbers used for comparison remain unrounded.
@@ -124,7 +124,10 @@ function setupListeners() {
   });
   $('search').addEventListener('input', event => { state.search = event.target.value.trim().toLowerCase(); renderTable(); });
   $('provider').addEventListener('change', event => { state.provider = event.target.value; renderTable(); });
-  $('sort').addEventListener('change', event => { state.sort = event.target.value; renderTable(); });
+  $('priceTable').addEventListener('click', event => {
+    const button = event.target.closest('button[data-sort]');
+    if (button && toggleSort(button.dataset.sort)) renderTable();
+  });
   $('inputTokens').addEventListener('input', renderCalculator);
   $('outputTokens').addEventListener('input', renderCalculator);
   $('billingPlans').addEventListener('click', event => {
@@ -147,6 +150,30 @@ function setupListeners() {
   window.addEventListener('resize', hideFeePopover);
 }
 
+const PRICE_SORT_KEYS = ['model','provider','input','output','total','source'];
+function toggleSort(key) {
+  if (!PRICE_SORT_KEYS.includes(key)) return false;
+  if (state.sort === key) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+  else { state.sort = key; state.sortDir = 'asc'; }
+  return true;
+}
+function updateSortHeaders() {
+  for (const th of document.querySelectorAll('#priceTable th[data-sort-header]')) {
+    const active = th.dataset.sortHeader === state.sort;
+    th.setAttribute('aria-sort',active ? (state.sortDir === 'asc' ? 'ascending':'descending') : 'none');
+    const indicator=th.querySelector('.sort-indicator');
+    if(indicator) indicator.textContent=active ? (state.sortDir === 'asc' ? '↑':'↓'):'↕';
+    const button=th.querySelector('button[data-sort]');
+    if(button) button.title=active
+      ? '目前'+(state.sortDir==='asc'?'升序':'降序')+'，點擊改為'+(state.sortDir==='asc'?'降序':'升序')
+      : '點擊依此欄升序排列';
+  }
+}
+function sourceName(q) {
+  return q.status === 'anomaly_hold' ? '異常暫緩'
+    : q.status === 'stale' ? '前次有效值'
+    : q.verification === 'provider_api' ? '平台 API' : '社群彙整';
+}
 function filteredQuotes() {
   const items = state.quotes.filter(q => {
     if (state.family !== 'all' && q.family !== state.family) return false;
@@ -154,20 +181,32 @@ function filteredQuotes() {
     const haystack = `${q.model_id} ${q.model_name} ${q.provider}`.toLowerCase();
     return haystack.includes(state.search);
   });
-  const orderKey = ({input:'input_usd_m', output:'output_usd_m', total:'total'})[state.sort];
-  items.sort((a,b) => {
-    if (orderKey) {
-      const aValue = priceValue(a,orderKey), bValue = priceValue(b,orderKey);
-      if (aValue === null && bValue !== null) return 1;
-      if (bValue === null && aValue !== null) return -1;
-      if (aValue !== null && bValue !== null && aValue !== bValue) return aValue - bValue;
+  const direction=state.sortDir==='desc'?-1:1;
+  const tie=(a,b)=>a.model_id.localeCompare(b.model_id)||a.provider.localeCompare(b.provider);
+  const priceKey={input:'input_usd_m',output:'output_usd_m',total:'total'}[state.sort];
+  items.sort((a,b)=>{
+    if(priceKey){
+      const av=priceValue(a,priceKey),bv=priceValue(b,priceKey);
+      if(av===null&&bv!==null)return 1;
+      if(bv===null&&av!==null)return -1;
+      if(av!==null&&bv!==null&&av!==bv)return (av-bv)*direction;
+    }else if(state.sort==='provider'){
+      const c=a.provider.localeCompare(b.provider);
+      if(c)return c*direction;
+    }else if(state.sort==='source'){
+      const c=sourceName(a).localeCompare(sourceName(b));
+      if(c)return c*direction;
+    }else if(state.sort==='model'){
+      const c=a.model_id.localeCompare(b.model_id);
+      if(c)return c*direction;
     }
-    return a.model_id.localeCompare(b.model_id) || a.provider.localeCompare(b.provider);
+    return tie(a,b);
   });
   return items;
 }
 
 function renderTable() {
+  updateSortHeaders();
   const quotes = filteredQuotes();
   const tbody = $('priceRows');
   hideFeePopover();

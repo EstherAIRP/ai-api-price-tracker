@@ -3,7 +3,7 @@
 const $ = id => document.getElementById(id);
 const core = window.CostCore;
 const state = {quotes:[], policies:null, fx:null, family:'all', search:'', provider:'all',
-  plan:'standard', cache:'miss', currency:'USD', sort:'cost1', selected:null, published:null};
+  plan:'standard', cache:'miss', currency:'USD', sort:'cost1', sortDir:'asc', selected:null, published:null};
 const ids = {prompt:'promptTokens', user:'userTokens', rag:'ragTokens',
   output:'outputTokens', historyPer:'historyPerTokens', historyCount:'historyCount'};
 let activeTooltip = null;
@@ -151,7 +151,10 @@ function setupListeners() {
   });
   $('search').addEventListener('input',event=>{state.search=event.target.value.trim().toLowerCase();render();});
   $('provider').addEventListener('change',event=>{state.provider=event.target.value;render();});
-  $('sort').addEventListener('change',event=>{state.sort=event.target.value;render();});
+  $('estimateTable').addEventListener('click',event=>{
+    const button=event.target.closest('button[data-sort]');
+    if(button && toggleSort(button.dataset.sort)) render();
+  });
   document.addEventListener('click',event=>{
     if (activeTooltip && !event.target.closest('.fee-info-button')) hideTooltip();
   });
@@ -159,32 +162,64 @@ function setupListeners() {
   window.addEventListener('scroll',hideTooltip,{passive:true});
   window.addEventListener('resize',hideTooltip,{passive:true});
 }
-function visibleQuotes(inputs) {
-  const list = state.quotes.filter(q=>{
-    if (state.family!=='all' && state.family!==q.family) return false;
-    if (state.provider!=='all' && state.provider!==q.provider) return false;
+const ESTIMATE_SORT_KEYS=['model','provider','cost1','cost10','cost50','source'];
+function toggleSort(key){
+  if(!ESTIMATE_SORT_KEYS.includes(key))return false;
+  if(state.sort===key)state.sortDir=state.sortDir==='asc'?'desc':'asc';
+  else {state.sort=key;state.sortDir='asc';}
+  return true;
+}
+function updateSortHeaders(){
+  for(const th of document.querySelectorAll('#estimateTable th[data-sort-header]')){
+    const active=th.dataset.sortHeader===state.sort;
+    th.setAttribute('aria-sort',active?(state.sortDir==='asc'?'ascending':'descending'):'none');
+    const indicator=th.querySelector('.sort-indicator');
+    if(indicator)indicator.textContent=active?(state.sortDir==='asc'?'↑':'↓'):'↕';
+    const button=th.querySelector('button[data-sort]');
+    if(button)button.title=active
+      ?'目前'+(state.sortDir==='asc'?'升序':'降序')+'，點擊改為'+(state.sortDir==='asc'?'降序':'升序')
+      :'點擊依此欄升序排列';
+  }
+}
+function sourceName(q){
+  return q.status==='stale'?'前次有效值'
+    :q.verification==='provider_api'?'平台 API':'社群彙整';
+}
+function visibleQuotes(inputs){
+  const list=state.quotes.filter(q=>{
+    if(state.family!=='all' && state.family!==q.family)return false;
+    if(state.provider!=='all' && state.provider!==q.provider)return false;
     return (String(q.model_id)+' '+String(q.model_name)+' '+String(q.provider)).toLowerCase().includes(state.search);
   });
-  if(state.sort==='model'){
-    list.sort((a,b)=>a.model_id.localeCompare(b.model_id)||a.provider.localeCompare(b.provider));
-  } else {
-    const expensive = state.sort==='costHigh';
-    const amounts = new Map();
-    const amount = q=>{
-      if (!amounts.has(q.id)) {
-        const r = quoteCost(q,inputs,1);
-        amounts.set(q.id,r.ok?r.total:null);
-      }
-      return amounts.get(q.id);
-    };
-    list.sort((a,b)=>{
-      const aa=amount(a),bb=amount(b);
-      if (aa===null && bb===null) return a.model_id.localeCompare(b.model_id);
-      if(aa===null)return 1;
-      if(bb===null)return -1;
-      return (expensive?bb-aa:aa-bb)||a.model_id.localeCompare(b.model_id)||a.provider.localeCompare(b.provider);
-    });
-  }
+  const direction=state.sortDir==='desc'?-1:1;
+  const tie=(a,b)=>a.model_id.localeCompare(b.model_id)||a.provider.localeCompare(b.provider);
+  const calls={cost1:1,cost10:10,cost50:50}[state.sort];
+  const amounts=new Map();
+  const cost=q=>{
+    if(!amounts.has(q.id)){
+      const result=quoteCost(q,inputs,calls);
+      amounts.set(q.id,result.ok?result.total:null);
+    }
+    return amounts.get(q.id);
+  };
+  list.sort((a,b)=>{
+    if(calls){
+      const av=cost(a),bv=cost(b);
+      if(av===null && bv!==null)return 1;
+      if(bv===null && av!==null)return -1;
+      if(av!==null && bv!==null && av!==bv)return (av-bv)*direction;
+    }else if(state.sort==='provider'){
+      const c=a.provider.localeCompare(b.provider);
+      if(c)return c*direction;
+    }else if(state.sort==='source'){
+      const c=sourceName(a).localeCompare(sourceName(b));
+      if(c)return c*direction;
+    }else if(state.sort==='model'){
+      const c=a.model_id.localeCompare(b.model_id);
+      if(c)return c*direction;
+    }
+    return tie(a,b);
+  });
   return list;
 }
 function renderSummary(inputs) {
@@ -195,6 +230,7 @@ function renderSummary(inputs) {
   $('cacheTotal').textContent = normalized ? normalized.cachePrefix.toLocaleString('zh-TW') : '—';
 }
 function renderTable(inputs) {
+  updateSortHeaders();
   hideTooltip();
   const tbody=$('estimateRows');
   tbody.replaceChildren();

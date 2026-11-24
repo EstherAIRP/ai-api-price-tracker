@@ -72,11 +72,11 @@
           <div class="filter-controls">
             <label class="search"><span aria-hidden="true">⌕</span><input id="search" placeholder="搜尋模型或平台…" autocomplete="off" aria-label="搜尋模型或平台"></label>
             <label class="select-wrap"><span>平台</span><select id="provider"><option value="all">全部</option></select></label>
-            <label class="select-wrap"><span>排序</span><select id="sort"><option value="model">模型名稱</option><option value="input">輸入價格 ↑</option><option value="output">輸出價格 ↑</option><option value="total">合計價格 ↑</option></select></label>
+            
           </div>
         </div>
         <div id="loadNotice" class="load-notice" role="status" aria-live="polite">正在載入價格資料…</div>
-        <div class="table-scroll"><table id="priceTable"><thead><tr><th>模型 / 系列</th><th>API 供應平台</th><th class="num">輸入 / 百萬</th><th class="num">輸出 / 百萬</th><th class="num">合計 / 百萬</th><th>資料來源</th><th></th></tr></thead><tbody id="priceRows"></tbody></table></div>
+        <div class="table-scroll"><table id="priceTable"><thead><tr><th data-sort-header="model" aria-sort="ascending"><button type="button" class="sort-button" data-sort="model">模型 / 系列<span class="sort-indicator" aria-hidden="true">↑</span></button></th><th data-sort-header="provider" aria-sort="none"><button type="button" class="sort-button" data-sort="provider">API 供應平台<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th class="num" data-sort-header="input" aria-sort="none"><button type="button" class="sort-button" data-sort="input">輸入 / 百萬<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th class="num" data-sort-header="output" aria-sort="none"><button type="button" class="sort-button" data-sort="output">輸出 / 百萬<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th class="num" data-sort-header="total" aria-sort="none"><button type="button" class="sort-button" data-sort="total">合計 / 百萬<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th data-sort-header="source" aria-sort="none"><button type="button" class="sort-button" data-sort="source">資料來源<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th aria-label="開啟詳情"></th></tr></thead><tbody id="priceRows"></tbody></table></div>
         <div class="empty-state" id="emptyState" hidden><div class="empty-icon" aria-hidden="true">◇</div><h3 id="emptyTitle">尚無價格資料</h3><p id="emptyText">請先執行第一次「full」更新，資料通過驗證後會自動顯示在此。</p></div>
         <footer class="table-footer"><span id="shownCount">價格資料載入中…</span><span>OpenRouter 已按方案換算含費參考價；小額儲值最低費與稅金另計</span></footer>
       </section>
