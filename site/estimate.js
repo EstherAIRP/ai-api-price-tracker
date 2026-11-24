@@ -43,6 +43,15 @@ function displayMoney(usd) {
     ? core.formatTWD(usd, state.fx && state.fx.rate)
     : core.formatUSD(usd);
 }
+function exactMoney(usd) {
+  if (typeof usd !== 'number' || !Number.isFinite(usd) || usd < 0) return '金額資料無效';
+  if (state.currency === 'TWD') {
+    const rate = state.fx && state.fx.rate;
+    if (typeof rate !== 'number' || !Number.isFinite(rate) || rate <= 0) return '臺幣匯率未載入';
+    return '未四捨五入：TWD NT$' + Number((usd * rate).toPrecision(12)).toString();
+  }
+  return '未四捨五入：USD $' + Number(usd.toPrecision(12)).toString();
+}
 function moneyWrap(cell, quote, outcome) {
   if (!outcome.ok) {
     const msg = outcome.reason === 'cache_unavailable' ? '沒有公開快取讀取報價' :
@@ -54,8 +63,16 @@ function moneyWrap(cell, quote, outcome) {
     return;
   }
   const line = el('span','price-with-info estimate-money');
-  if (quote.provider === 'OpenRouter') line.append(feeButton());
-  line.append(el('span','',displayMoney(outcome.total)));
+  if (quote.provider === 'OpenRouter') {
+    line.append(feeButton());
+  } else {
+    const slot=el('span','fee-info-placeholder');
+    slot.setAttribute('aria-hidden','true');
+    line.append(slot);
+  }
+  const amount=el('span','money-number',displayMoney(outcome.total));
+  amount.title=exactMoney(outcome.total);
+  line.append(amount);
   cell.append(line);
 }
 function hideTooltip() {
@@ -225,7 +242,9 @@ function renderTable(inputs) {
 }
 function detailLine(label, usd) {
   const row=el('div','estimate-detail-line');
-  row.append(el('span','',label),el('strong','',displayMoney(usd)));
+  const amount=el('strong','money-number',displayMoney(usd));
+  amount.title=exactMoney(usd);
+  row.append(el('span','',label),amount);
   return row;
 }
 function renderDetail(inputs) {
@@ -260,7 +279,9 @@ function renderDetail(inputs) {
     const totals=el('div','estimate-round-summary');
     for(const n of [1,10,50]){
       const box=el('div','estimate-round-item');
-      box.append(el('span','',n+' 次'),el('strong','',displayMoney(one.total*n)));
+      const amount=el('strong','money-number',displayMoney(one.total*n));
+      amount.title=exactMoney(one.total*n);
+      box.append(el('span','',n+' 次'),amount);
       totals.append(box);
     }
     body.append(totals);

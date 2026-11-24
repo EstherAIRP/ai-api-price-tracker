@@ -72,18 +72,19 @@
       ? {rate:rate, date:obj.rate_date || obj.date, source:obj.source || null} : null;
   }
 
+  // All visible costs have three decimals. Tiny nonzero values must not appear free.
   function formatUSD(number) {
     if (!validPrice(number)) return 'USD —';
-    const digits = number === 0 ? 2 : number < 0.000001 ? 10 : number < 0.001 ? 8 :
-      number < 0.1 ? 6 : number < 1 ? 5 : 4;
-    return '$' + number.toLocaleString('en-US', {minimumFractionDigits:Math.min(2,digits), maximumFractionDigits:digits});
+    if (number > 0 && number < 0.001) return '<$0.001';
+    return '$' + number.toLocaleString('en-US', {minimumFractionDigits:3, maximumFractionDigits:3});
   }
 
   function formatTWD(number, rate) {
     if (!validPrice(number) || !validPrice(rate) || !rate) return 'NT$ —';
     const converted = number * rate;
-    const digits = converted === 0 ? 2 : converted < 0.001 ? 8 : converted < 0.1 ? 6 : converted < 1 ? 4 : 2;
-    return 'NT$' + converted.toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:digits});
+    if (!validPrice(converted)) return 'NT$ —';
+    if (converted > 0 && converted < 0.001) return '<NT$0.001';
+    return 'NT$' + converted.toLocaleString('en-US', {minimumFractionDigits:3, maximumFractionDigits:3});
   }
 
   const api = Object.freeze({normalizeInputs,feeRate,estimateOnce,estimateMany,validateFx,formatUSD,formatTWD});

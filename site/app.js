@@ -5,14 +5,14 @@ const state = {
   sort: 'model', selectedQuoteId: null, feePolicies: null, plan: 'standard',
 };
 const $ = id => document.getElementById(id);
+// Display only: the underlying numbers used for comparison remain unrounded.
 const dollars = value => {
-  if (typeof value !== 'number' || !Number.isFinite(value)) return '—';
-  if (value === 0) return '$0';
-  const digits = value < 0.001 ? 7 : value < 0.1 ? 5 : value < 1 ? 4 : 2;
-  return '$' + value.toLocaleString('en-US', {maximumFractionDigits: digits});
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) return '—';
+  if (value > 0 && value < 0.001) return '<$0.001';
+  return '$' + value.toLocaleString('en-US', {minimumFractionDigits:3, maximumFractionDigits:3});
 };
-const money = value => typeof value === 'number' && Number.isFinite(value) && (value >= 0.01 || value === 0)
-  ? '$' + value.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : dollars(value);
+const exactDollars = value => typeof value === 'number' && Number.isFinite(value) && value >= 0
+  ? '未四捨五入：USD $' + Number(value.toPrecision(12)).toString() : '金額資料無效';
 const formatStamp = value => value ? new Intl.DateTimeFormat('zh-TW', {
   timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit',
   hour: '2-digit', minute: '2-digit', hour12: false,
@@ -97,8 +97,16 @@ function feeButton() {
 }
 function appendPrice(node, quote, value) {
   const wrap = el('span', 'price-with-info');
-  if (quote.provider === 'OpenRouter') wrap.append(feeButton());
-  wrap.append(el('span', '', dollars(value)));
+  if (quote.provider === 'OpenRouter') {
+    wrap.append(feeButton());
+  } else {
+    const slot = el('span', 'fee-info-placeholder');
+    slot.setAttribute('aria-hidden', 'true');
+    wrap.append(slot);
+  }
+  const amount = el('span', 'money-number', dollars(value));
+  amount.title = exactDollars(value);
+  wrap.append(amount);
   node.append(wrap);
 }
 

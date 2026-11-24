@@ -85,3 +85,10 @@
   .scenario-summary span{font-size:10px}
   .scenario-summary strong{font-size:16px}
 }
+
+/* Uniform numeric alignment: both platforms use the same reserved warning-icon slot. */
+.price-with-info{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.price-with-info .money-number{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;text-align:right}
+.price-with-info .fee-info-placeholder{width:16px;height:16px;flex:0 0 16px;visibility:hidden;pointer-events:none}
+.estimate-cost .price-with-info,.estimate-peer-price .price-with-info{justify-content:flex-end}
+.estimate-detail-line .money-number,.estimate-round-item .money-number{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}

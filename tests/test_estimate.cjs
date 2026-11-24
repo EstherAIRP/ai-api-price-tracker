@@ -82,3 +82,28 @@ test('Currency formatting keeps small costs visible',()=>{
 test('Missing official input/output rate cannot become a zero-cost result',()=>{
   assert.equal(estimateOnce(Object.assign({},other,{output_usd_m:null}),inputs,opts).ok,false);
 });
+
+test('All USD costs show precisely three decimals including zero and thousands',()=>{
+  assert.equal(formatUSD(0),'$0.000');
+  assert.equal(formatUSD(1.5),'$1.500');
+  assert.equal(formatUSD(1234.5678),'$1,234.568');
+  assert.equal(formatUSD(0.123456),'$0.123');
+});
+test('All TWD costs show precisely three decimals after conversion',()=>{
+  assert.equal(formatTWD(0,32.9),'NT$0.000');
+  assert.equal(formatTWD(1.5,32),'NT$48.000');
+  assert.equal(formatTWD(0.012345,32),'NT$0.395');
+});
+test('Tiny nonzero costs never look free in either currency',()=>{
+  assert.equal(formatUSD(0.00045),'<$0.001');
+  assert.equal(formatUSD(1e-9),'<$0.001');
+  assert.equal(formatTWD(0.00001,32.9),'<NT$0.001');
+  assert.equal(formatTWD(0.0001,32.9),'NT$0.003');
+});
+test('Display format does not change the model cost arithmetic',()=>{
+  const one=estimateOnce(other,inputs,opts);
+  const ten=estimateMany(other,inputs,opts,10);
+  near(one.total,0.039);
+  near(ten.total,one.total*10);
+  assert.equal(formatUSD(one.total),'$0.039');
+});
