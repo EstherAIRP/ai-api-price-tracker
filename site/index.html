@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="GPT、Gemini、Claude、DeepSeek、Grok 的 AI API 價格比較與歷史變動追蹤。">
+  <title>API Atlas — AI API 價格追蹤</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="API Atlas 首頁">
+        <span class="brand-icon" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <div class="brand-label">API <strong>Atlas</strong><small>PRICE INTELLIGENCE</small></div>
+      </div>
+      <nav class="top-nav" aria-label="網站導覽">
+        <a href="#prices" class="nav-active">價格總覽</a>
+        <a href="#comparison">模型比較</a>
+        <a href="#about">資料說明</a>
+      </nav>
+      <a class="top-link" href="https://github.com/TwinkleStars1029/ai-api-price-tracker" target="_blank" rel="noopener noreferrer" id="repoLink">GitHub <span aria-hidden="true">↗</span></a>
+    </header>
+    <main>
+      <section class="hero" aria-labelledby="mainTitle">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="pulse"></span> DAILY API PRICE MONITOR</div>
+          <h1 id="mainTitle">AI API 價格，<br><em>一眼看清差異。</em></h1>
+          <p>整合主流模型及多家 API 供應平台，透明呈現輸入與輸出計價、來源可信度及每日變動。</p>
+          <div class="hero-meta"><span id="freshness"><span class="meta-dot muted"></span> 尚無發布資料</span><span class="meta-separator"></span><span>每日 09:00 蒐集 · 12:00 發布（台北時間）</span></div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orb orb-one"></div><div class="orb orb-two"></div>
+          <div class="art-grid"></div>
+          <div class="art-floating f-one">01 <span>COLLECT</span></div>
+          <div class="art-floating f-two">02 <span>COMPARE</span></div>
+          <div class="art-floating f-three">03 <span>TRACK</span></div>
+          <div class="art-line l-one"></div><div class="art-line l-two"></div>
+        </div>
+      </section>
+      <section class="stats" aria-label="資料概況">
+        <article class="stat-card"><div class="stat-name">模型數量 <span class="stat-icon">▦</span></div><div class="stat-number" id="statModels">—</div><div class="stat-caption">已收錄的不同模型</div></article>
+        <article class="stat-card"><div class="stat-name">價格筆數 <span class="stat-icon">≋</span></div><div class="stat-number" id="statQuotes">—</div><div class="stat-caption">各平台公開報價</div></article>
+        <article class="stat-card"><div class="stat-name">供應平台 <span class="stat-icon">⌘</span></div><div class="stat-number" id="statProviders">—</div><div class="stat-caption">官網通路與第三方平台</div></article>
+        <article class="stat-card"><div class="stat-name">最近資料異常 <span class="stat-icon">!</span></div><div class="stat-number" id="statWarnings">—</div><div class="stat-caption">需重新核對的報價</div></article>
+      </section>
+      <section id="prices" class="main-card">
+        <div class="section-intro"><div><div class="section-kicker">LIVE CATALOG</div><h2>模型價格總覽</h2><p>所有費用統一以美元／每百萬 Token 顯示，方便橫向比較。</p></div><div class="mini-caption">僅比較標準文字輸入／輸出價格</div></div>
+        <div class="filters">
+          <div class="family-chips" id="families" role="group" aria-label="模型系列">
+            <button type="button" class="chip active" data-family="all" aria-pressed="true">全部模型</button>
+            <button type="button" class="chip" data-family="GPT">GPT</button>
+            <button type="button" class="chip" data-family="Gemini">Gemini</button>
+            <button type="button" class="chip" data-family="Claude">Claude</button>
+            <button type="button" class="chip" data-family="DeepSeek">DeepSeek</button>
+            <button type="button" class="chip" data-family="Grok">Grok</button>
+          </div>
+          <div class="filter-controls">
+            <label class="search"><span aria-hidden="true">⌕</span><input id="search" placeholder="搜尋模型或平台…" autocomplete="off" aria-label="搜尋模型或平台"></label>
+            <label class="select-wrap"><span>平台</span><select id="provider"><option value="all">全部</option></select></label>
+            <label class="select-wrap"><span>排序</span><select id="sort"><option value="model">模型名稱</option><option value="input">輸入價格 ↑</option><option value="output">輸出價格 ↑</option><option value="total">合計價格 ↑</option></select></label>
+          </div>
+        </div>
+        <div class="table-scroll"><table id="priceTable"><thead><tr><th>模型 / 系列</th><th>API 供應平台</th><th class="num">輸入 / 百萬</th><th class="num">輸出 / 百萬</th><th class="num">合計 / 百萬</th><th>資料來源</th><th></th></tr></thead><tbody id="priceRows"></tbody></table></div>
+        <div class="empty-state" id="emptyState" hidden><div class="empty-icon" aria-hidden="true">◇</div><h3 id="emptyTitle">尚無價格資料</h3><p id="emptyText">請先執行第一次「full」更新，資料通過驗證後會自動顯示在此。</p></div>
+        <footer class="table-footer"><span id="shownCount">0 筆報價</span><span>價格不含稅、支付手續費及特殊計費級距</span></footer>
+      </section>
+      <section id="comparison" class="detail-layout" aria-labelledby="detailTitle">
+        <div class="detail-card"><div class="section-kicker">MODEL COMPARISON</div><h2 id="detailTitle">挑選模型，查看各平台報價</h2><p class="subtle">點選上方任一模型列，即可查看同一模型在其他平台的價格。</p><div id="modelDetail" class="detail-empty"><span aria-hidden="true">◎</span><p>等待選取模型</p></div></div>
+        <div class="detail-card calculator"><div class="section-kicker">COST SIMULATOR</div><h2>使用成本試算</h2><p class="subtle">依選取的單筆報價，估算文字 Token 使用成本。</p><div class="calc-grid"><label>輸入 Token 數<input id="inputTokens" type="number" min="0" max="10000000000" value="1000000"></label><label>輸出 Token 數<input id="outputTokens" type="number" min="0" max="10000000000" value="300000"></label></div><div class="calc-label" id="calcModel">請先選擇模型</div><div class="calc-price" id="calcPrice">—</div><div class="calc-note">美元估算 · 不包含快取、服務費與分級計價</div><div class="chart-wrap"><div class="chart-head"><strong>近 180 天價格變動</strong><span>輸入 / 百萬 Token</span></div><svg id="trendChart" role="img" aria-label="選取模型的價格歷史走勢圖" viewBox="0 0 480 120" preserveAspectRatio="none"></svg><p class="chart-placeholder" id="chartPlaceholder">尚無歷史紀錄</p></div></div>
+      </section>
+      <section id="about" class="note-card"><div><div class="section-kicker">DATA TRANSPARENCY</div><h2>資料如何取得？</h2></div><div class="note-copy"><p><strong>平台 API 報價</strong>：直接讀取 OpenRouter 提供的模型計價資料；若該來源拒絕存取，系統會保留前次有效值並顯示過期狀態。</p><p><strong>社群彙整參考</strong>：其餘供應平台使用 Models.dev 公開資料。標示「官方通路」代表可向開發商直接購買，<em>不代表已從官方價格頁逐項查核</em>。</p><p><strong>每天自動更新</strong>：09:00 蒐集、12:00 發布；來源失敗或異常價格不會覆蓋有效舊值。個別供應商的批次、快取及促銷費率可能不同，實際購買前應點選官網核對。</p></div></section>
+    </main>
+    <footer class="site-footer"><span>© API Atlas · Public price transparency</span><span>資料僅供比較參考，實際費用以供應商結帳資訊為準。</span></footer>
+  </div>
+</body>
+</html>

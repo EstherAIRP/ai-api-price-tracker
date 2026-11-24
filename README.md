@@ -13,21 +13,21 @@
 
 ## 安裝與上線
 
-1. 在 **已連線的 GitHub 帳號**建立新的 **Public** repository：`ai-api-price-tracker`，預設分支 `main`。建立時不要先加入 README，方便直接匯入此專案。
-2. 將這份專案解壓後的所有檔案（包含隱藏的 `.github/workflows/`）上傳到新儲存庫的 `main` 分支。可使用 Git CLI：
+1. 本專案已建立於 **EstherAIRP/ai-api-price-tracker**（Public；預設分支 `main`）。
+2. 原始碼已同步至儲存庫；若需從本地重新提交，可使用 Git CLI：
 
    ```bash
    git init
    git branch -M main
    git add .
    git commit -m "Initial API Atlas website"
-   git remote add origin https://github.com/YOUR_GITHUB_LOGIN/ai-api-price-tracker.git
+   git remote add origin https://github.com/EstherAIRP/ai-api-price-tracker.git
    git push -u origin main
    ```
 
 3. 到 **Settings → Pages → Build and deployment → Source**，選擇 **GitHub Actions**。
 4. 到 **Actions → Daily AI API prices → Run workflow**，選擇 `full`，執行首次抓取、驗證、提交與網站部署。
-5. 確認 **Actions** 工作流程成功，再開啟 **Settings → Pages** 查看網站網址，通常是 `https://YOUR_GITHUB_LOGIN.github.io/ai-api-price-tracker/`。
+5. 確認 **Actions** 工作流程成功，再開啟 **Settings → Pages** 查看網站網址，通常是 `https://EstherAIRP.github.io/ai-api-price-tracker/`。
 6. 如 GitHub Actions 提示無權推送，請到 **Settings → Actions → General** 檢查工作流程與 `GITHUB_TOKEN` 的寫入權限、分支保護規則。排程已在工作流程宣告 `contents: write`，不需要儲存庫存取權杖（PAT）。
 
 > GitHub Pages 必須設定為 Actions 發布來源。若 `github-pages` Environment 有額外設定審核人，須移除該保護規則才符合「無審核直接部署」的需求。

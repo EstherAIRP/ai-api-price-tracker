@@ -1,0 +1,112 @@
+name: Daily AI API prices
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+      timezone: 'Asia/Taipei'
+    - cron: '0 12 * * *'
+      timezone: 'Asia/Taipei'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'full: fetch + publish, collect: fetch only, publish: publish saved staging'
+        required: true
+        type: choice
+        default: full
+        options:
+          - full
+          - collect
+          - publish
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ai-price-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    outputs:
+      mode: ${{ steps.mode.outputs.mode }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Resolve collection and publication mode
+        id: mode
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          CRON: ${{ github.event.schedule }}
+          REQUESTED_MODE: ${{ inputs.mode }}
+        run: |
+          if [[ "$EVENT_NAME" == 'schedule' ]]; then
+            if [[ "$CRON" == '0 9 * * *' ]]; then
+              mode=collect
+            elif [[ "$CRON" == '0 12 * * *' ]]; then
+              mode=publish
+            else
+              echo "Unexpected schedule: $CRON" >&2
+              exit 1
+            fi
+          else
+            mode="${REQUESTED_MODE:-full}"
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "Mode: $mode"
+      - name: Collect from published catalog APIs
+        if: steps.mode.outputs.mode == 'collect' || steps.mode.outputs.mode == 'full'
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python scripts/prices.py collect
+      - name: Publish validated snapshot
+        if: steps.mode.outputs.mode == 'publish' || steps.mode.outputs.mode == 'full'
+        run: python scripts/prices.py publish
+      - name: Verify output and run tests
+        run: python -m unittest discover -s tests -v
+      - name: Commit data changes to default branch without review
+        env:
+          MODE: ${{ steps.mode.outputs.mode }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- data/staging.json site/data/prices.json site/data/history.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: ${MODE} AI API prices $(TZ=Asia/Taipei date +'%Y-%m-%d')"
+            git push origin HEAD:main
+          else
+            echo 'No data changes to commit'
+          fi
+
+  deploy:
+    needs: update
+    if: needs.update.result == 'success' && (needs.update.outputs.mode == 'publish' || needs.update.outputs.mode == 'full')
+    runs-on: ubuntu-latest
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./site
+      - id: deployment
+        uses: actions/deploy-pages@v4
