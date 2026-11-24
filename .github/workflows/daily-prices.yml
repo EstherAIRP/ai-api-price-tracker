@@ -1,6 +1,11 @@
 name: Daily AI API prices
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/daily-prices.yml'
   schedule:
     - cron: '0 9 * * *'
       timezone: 'Asia/Taipei'
