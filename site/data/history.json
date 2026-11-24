@@ -1,4 +1,1979 @@
 {
-  "schema_version": 1,
-  "events": []
+  "events": [
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-fable-5",
+      "input_usd_m": 10.0,
+      "output_usd_m": 50.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-fable-5",
+      "input_usd_m": 10.0,
+      "output_usd_m": 50.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-fable-5-1",
+      "input_usd_m": 10.0,
+      "output_usd_m": 50.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-fable-5-1",
+      "input_usd_m": 10.0,
+      "output_usd_m": 50.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-fable-5-2",
+      "input_usd_m": 8.0,
+      "output_usd_m": 40.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-fable-5-2",
+      "input_usd_m": 8.0,
+      "output_usd_m": 40.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-fable-5.1",
+      "input_usd_m": 10.0,
+      "output_usd_m": 50.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-fable-5.1:batch",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-fable-5.2",
+      "input_usd_m": 8.0,
+      "output_usd_m": 40.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-fable-5.2:batch",
+      "input_usd_m": 4.0,
+      "output_usd_m": 20.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-fable-5:batch",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-haiku-4-5",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-haiku-4-5",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-haiku-4-5-20251001",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-haiku-4.5",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-haiku-4.5:batch",
+      "input_usd_m": 0.5,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-haiku-5-5",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-haiku-5-5",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-haiku-5.5",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-haiku-5.5:batch",
+      "input_usd_m": 0.05,
+      "output_usd_m": 0.25
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4-1",
+      "input_usd_m": 15.0,
+      "output_usd_m": 75.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-opus-4-5",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4-5",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-opus-4-5-20251101",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-opus-4-6",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4-6",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-opus-4-7",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4-7",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-opus-4-8",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4-8",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4.1",
+      "input_usd_m": 15.0,
+      "output_usd_m": 75.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4.1:batch",
+      "input_usd_m": 7.5,
+      "output_usd_m": 37.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4.5",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4.5:batch",
+      "input_usd_m": 2.5,
+      "output_usd_m": 12.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4.6",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4.6:batch",
+      "input_usd_m": 2.5,
+      "output_usd_m": 12.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4.7",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4.7:batch",
+      "input_usd_m": 2.5,
+      "output_usd_m": 12.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4.8",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-4.8:batch",
+      "input_usd_m": 2.5,
+      "output_usd_m": 12.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-opus-5",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-5",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-opus-5-5",
+      "input_usd_m": 4.0,
+      "output_usd_m": 20.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-5-5",
+      "input_usd_m": 4.0,
+      "output_usd_m": 20.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-5.5",
+      "input_usd_m": 4.0,
+      "output_usd_m": 20.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-5.5:batch",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-opus-5:batch",
+      "input_usd_m": 2.5,
+      "output_usd_m": 12.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-sonnet-4-5",
+      "input_usd_m": 3.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-4-5",
+      "input_usd_m": 3.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-sonnet-4-5-20250929",
+      "input_usd_m": 3.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-sonnet-4-6",
+      "input_usd_m": 3.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-4-6",
+      "input_usd_m": 3.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-4.5",
+      "input_usd_m": 3.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-4.5:batch",
+      "input_usd_m": 1.5,
+      "output_usd_m": 7.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-4.6",
+      "input_usd_m": 3.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-4.6:batch",
+      "input_usd_m": 1.5,
+      "output_usd_m": 7.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-sonnet-5",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-5",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "anthropic::anthropic/claude-sonnet-5-5",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-5-5",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-5.5",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-5.5:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::anthropic/claude-sonnet-5:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-chat",
+      "input_usd_m": 0.2574,
+      "output_usd_m": 1.0287
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-chat-v3-0324",
+      "input_usd_m": 0.25,
+      "output_usd_m": 1.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-chat-v3.1",
+      "input_usd_m": 0.25,
+      "output_usd_m": 0.95
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::deepseek/deepseek-ocr-2",
+      "input_usd_m": 0.03,
+      "output_usd_m": 0.03
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::deepseek/deepseek-r1",
+      "input_usd_m": 0.7,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "together::deepseek/deepseek-r1",
+      "input_usd_m": 3.0,
+      "output_usd_m": 7.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::deepseek/deepseek-r1-0528",
+      "input_usd_m": 0.7,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-r1-0528",
+      "input_usd_m": 0.571,
+      "output_usd_m": 2.286
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::deepseek/deepseek-r1-0528",
+      "input_usd_m": 0.5,
+      "output_usd_m": 2.18
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::deepseek/deepseek-r1-0528-qwen3-8b",
+      "input_usd_m": 0.06,
+      "output_usd_m": 0.09
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::deepseek/deepseek-v3",
+      "input_usd_m": 0.89,
+      "output_usd_m": 0.89
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "together::deepseek/deepseek-v3",
+      "input_usd_m": 1.25,
+      "output_usd_m": 1.25
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::deepseek/deepseek-v3-0324",
+      "input_usd_m": 0.25,
+      "output_usd_m": 1.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::deepseek/deepseek-v3.1",
+      "input_usd_m": 0.27,
+      "output_usd_m": 1.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "together::deepseek/deepseek-v3.1",
+      "input_usd_m": 0.6,
+      "output_usd_m": 1.7
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v3.1-terminus",
+      "input_usd_m": 0.27,
+      "output_usd_m": 1.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v3.2",
+      "input_usd_m": 0.26,
+      "output_usd_m": 0.38
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::deepseek/deepseek-v3.2",
+      "input_usd_m": 0.27,
+      "output_usd_m": 0.42
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v3.2-exp",
+      "input_usd_m": 0.27,
+      "output_usd_m": 0.41
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-flash",
+      "input_usd_m": 0.09,
+      "output_usd_m": 0.18
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::deepseek/deepseek-v4-flash",
+      "input_usd_m": 0.13,
+      "output_usd_m": 0.28
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::deepseek/deepseek-v4-flash-0731",
+      "input_usd_m": 0.44,
+      "output_usd_m": 1.32
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-flash-0731",
+      "input_usd_m": 0.0434,
+      "output_usd_m": 0.3
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::deepseek/deepseek-v4-flash-0731",
+      "input_usd_m": 0.22,
+      "output_usd_m": 0.66
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "together::deepseek/deepseek-v4-flash-0731",
+      "input_usd_m": 0.14,
+      "output_usd_m": 0.28
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-flash-0731:batch",
+      "input_usd_m": 0.048,
+      "output_usd_m": 0.144
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-flash-vision-exp",
+      "input_usd_m": 0.2156,
+      "output_usd_m": 0.6468
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::deepseek/deepseek-v4-flash-vision-exp",
+      "input_usd_m": 0.44,
+      "output_usd_m": 1.32
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::deepseek/deepseek-v4-pro",
+      "input_usd_m": 1.6,
+      "output_usd_m": 3.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-pro",
+      "input_usd_m": 1.28,
+      "output_usd_m": 2.56
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::deepseek/deepseek-v4-pro",
+      "input_usd_m": 1.50162,
+      "output_usd_m": 3.135
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "deepseek::deepseek/deepseek-v4-pro-0813",
+      "input_usd_m": 0.66,
+      "output_usd_m": 1.98
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::deepseek/deepseek-v4-pro-0813",
+      "input_usd_m": 1.32,
+      "output_usd_m": 3.96
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-pro-0813",
+      "input_usd_m": 0.111,
+      "output_usd_m": 4.44
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::deepseek/deepseek-v4-pro-0813",
+      "input_usd_m": 1.32,
+      "output_usd_m": 3.96
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "together::deepseek/deepseek-v4-pro-0813",
+      "input_usd_m": 1.32,
+      "output_usd_m": 3.96
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "fireworks::deepseek/deepseek-v4.1-flash",
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::deepseek/deepseek-v4.1-flash",
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v4.1-flash",
+      "input_usd_m": 0.0498,
+      "output_usd_m": 0.1992
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "together::deepseek/deepseek-v4.1-flash",
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "deepseek::deepseek/deepseek-v4.1-flash-1017",
+      "input_usd_m": 0.15,
+      "output_usd_m": 0.6
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "fireworks::deepseek/deepseek-v4.1-flash-1017",
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::deepseek/deepseek-v4.1-flash-1017",
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v4.1-flash-1017",
+      "input_usd_m": 0.03,
+      "output_usd_m": 0.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "together::deepseek/deepseek-v4.1-flash-1017",
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v4.1-flash-1017:batch",
+      "input_usd_m": 0.035,
+      "output_usd_m": 0.149
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::deepseek/deepseek-v4.1-flash:batch",
+      "input_usd_m": 0.05,
+      "output_usd_m": 0.15
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-3.5-turbo-0613",
+      "input_usd_m": 1.0,
+      "output_usd_m": 2.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-3.5-turbo-16k",
+      "input_usd_m": 3.0,
+      "output_usd_m": 4.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4",
+      "input_usd_m": 30.0,
+      "output_usd_m": 60.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4-turbo:batch",
+      "input_usd_m": 5.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-4.1",
+      "input_usd_m": 2.0,
+      "output_usd_m": 8.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4.1",
+      "input_usd_m": 2.0,
+      "output_usd_m": 8.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-4.1-mini",
+      "input_usd_m": 0.4,
+      "output_usd_m": 1.6
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4.1-mini",
+      "input_usd_m": 0.4,
+      "output_usd_m": 1.6
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4.1-mini:batch",
+      "input_usd_m": 0.2,
+      "output_usd_m": 0.8
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4.1-nano",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.4
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4.1-nano:batch",
+      "input_usd_m": 0.05,
+      "output_usd_m": 0.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4.1:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 4.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-4o",
+      "input_usd_m": 2.5,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4o",
+      "input_usd_m": 2.5,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4o-2024-05-13",
+      "input_usd_m": 5.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-4o-2024-08-06",
+      "input_usd_m": 2.5,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4o-2024-08-06",
+      "input_usd_m": 2.5,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-4o-2024-11-20",
+      "input_usd_m": 2.5,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4o-2024-11-20",
+      "input_usd_m": 2.5,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-4o-mini",
+      "input_usd_m": 0.15,
+      "output_usd_m": 0.6
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4o-mini",
+      "input_usd_m": 0.15,
+      "output_usd_m": 0.6
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4o-mini-2024-07-18",
+      "input_usd_m": 0.15,
+      "output_usd_m": 0.6
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4o-mini:batch",
+      "input_usd_m": 0.075,
+      "output_usd_m": 0.3
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-4o:batch",
+      "input_usd_m": 1.25,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5",
+      "input_usd_m": 1.25,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5",
+      "input_usd_m": 1.25,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5-image",
+      "input_usd_m": 10.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5-image-mini",
+      "input_usd_m": 2.5,
+      "output_usd_m": 2.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5-mini",
+      "input_usd_m": 0.25,
+      "output_usd_m": 2.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5-mini",
+      "input_usd_m": 0.25,
+      "output_usd_m": 2.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5-mini:batch",
+      "input_usd_m": 0.125,
+      "output_usd_m": 1.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5-nano",
+      "input_usd_m": 0.05,
+      "output_usd_m": 0.4
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5-nano",
+      "input_usd_m": 0.05,
+      "output_usd_m": 0.4
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5-nano:batch",
+      "input_usd_m": 0.025,
+      "output_usd_m": 0.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5-pro",
+      "input_usd_m": 15.0,
+      "output_usd_m": 120.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5-pro",
+      "input_usd_m": 15.0,
+      "output_usd_m": 120.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5-pro:batch",
+      "input_usd_m": 7.5,
+      "output_usd_m": 60.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.1",
+      "input_usd_m": 1.25,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.1",
+      "input_usd_m": 1.25,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.1-codex",
+      "input_usd_m": 1.25,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.1-codex-max",
+      "input_usd_m": 1.25,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.1-codex-mini",
+      "input_usd_m": 0.25,
+      "output_usd_m": 2.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.1:batch",
+      "input_usd_m": 0.625,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.2",
+      "input_usd_m": 1.75,
+      "output_usd_m": 14.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.2",
+      "input_usd_m": 1.75,
+      "output_usd_m": 14.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.2-chat",
+      "input_usd_m": 1.75,
+      "output_usd_m": 14.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.2-codex",
+      "input_usd_m": 1.75,
+      "output_usd_m": 14.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.2-pro",
+      "input_usd_m": 21.0,
+      "output_usd_m": 168.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.2-pro",
+      "input_usd_m": 21.0,
+      "output_usd_m": 168.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.2-pro:batch",
+      "input_usd_m": 10.5,
+      "output_usd_m": 84.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.2:batch",
+      "input_usd_m": 0.875,
+      "output_usd_m": 7.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.3-codex",
+      "input_usd_m": 1.75,
+      "output_usd_m": 14.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.3-codex",
+      "input_usd_m": 1.75,
+      "output_usd_m": 14.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.4",
+      "input_usd_m": 2.5,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.4",
+      "input_usd_m": 2.5,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.4-image-2",
+      "input_usd_m": 8.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.4-mini",
+      "input_usd_m": 0.75,
+      "output_usd_m": 4.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.4-mini",
+      "input_usd_m": 0.75,
+      "output_usd_m": 4.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.4-mini:batch",
+      "input_usd_m": 0.375,
+      "output_usd_m": 2.25
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.4-nano",
+      "input_usd_m": 0.2,
+      "output_usd_m": 1.25
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.4-nano",
+      "input_usd_m": 0.2,
+      "output_usd_m": 1.25
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.4-nano:batch",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.625
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.4-pro",
+      "input_usd_m": 30.0,
+      "output_usd_m": 180.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.4-pro",
+      "input_usd_m": 30.0,
+      "output_usd_m": 180.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.4-pro:batch",
+      "input_usd_m": 15.0,
+      "output_usd_m": 90.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.4:batch",
+      "input_usd_m": 1.25,
+      "output_usd_m": 7.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.5",
+      "input_usd_m": 5.0,
+      "output_usd_m": 30.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.5",
+      "input_usd_m": 5.0,
+      "output_usd_m": 30.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.5-pro",
+      "input_usd_m": 30.0,
+      "output_usd_m": 180.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.5-pro",
+      "input_usd_m": 30.0,
+      "output_usd_m": 180.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.5-pro:batch",
+      "input_usd_m": 15.0,
+      "output_usd_m": 90.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.5:batch",
+      "input_usd_m": 2.5,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.6-cyber",
+      "input_usd_m": 12.5,
+      "output_usd_m": 75.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.6-luna",
+      "input_usd_m": 0.2,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-luna",
+      "input_usd_m": 0.2,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-luna-pro",
+      "input_usd_m": 0.2,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-luna-pro:batch",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.6
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-luna:batch",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.6
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.6-sol",
+      "input_usd_m": 4.0,
+      "output_usd_m": 20.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-sol",
+      "input_usd_m": 4.0,
+      "output_usd_m": 20.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-sol-pro",
+      "input_usd_m": 4.0,
+      "output_usd_m": 20.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-sol-pro:batch",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-sol:batch",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-5.6-terra",
+      "input_usd_m": 2.0,
+      "output_usd_m": 12.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-terra",
+      "input_usd_m": 2.0,
+      "output_usd_m": 12.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-terra-pro",
+      "input_usd_m": 2.0,
+      "output_usd_m": 12.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-terra-pro:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 6.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5.6-terra:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 6.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-5:batch",
+      "input_usd_m": 0.625,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-6-astra",
+      "input_usd_m": 10.0,
+      "output_usd_m": 50.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-astra",
+      "input_usd_m": 10.0,
+      "output_usd_m": 50.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-astra-pro",
+      "input_usd_m": 10.0,
+      "output_usd_m": 50.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-astra-pro:batch",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-astra:batch",
+      "input_usd_m": 5.0,
+      "output_usd_m": 25.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-6-luna",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-luna",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-luna-pro",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-luna-pro:batch",
+      "input_usd_m": 0.05,
+      "output_usd_m": 0.25
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-luna:batch",
+      "input_usd_m": 0.05,
+      "output_usd_m": 0.25
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-6-sol",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-sol",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-sol-pro",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-sol-pro:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6-sol:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-6.1-sol",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.1-sol",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.1-sol-pro",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.1-sol-pro:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.1-sol:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::openai/gpt-6.1-terra",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-6.1-terra",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.1-terra",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.1-terra-pro",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.1-terra-pro:batch",
+      "input_usd_m": 0.5,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.1-terra:batch",
+      "input_usd_m": 0.5,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::openai/gpt-6.2-astra",
+      "input_usd_m": 8.0,
+      "output_usd_m": 40.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-6.2-astra",
+      "input_usd_m": 8.0,
+      "output_usd_m": 40.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.2-astra",
+      "input_usd_m": 8.0,
+      "output_usd_m": 40.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.2-astra-pro",
+      "input_usd_m": 8.0,
+      "output_usd_m": 40.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.2-astra-pro:batch",
+      "input_usd_m": 4.0,
+      "output_usd_m": 20.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.2-astra:batch",
+      "input_usd_m": 4.0,
+      "output_usd_m": 20.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::openai/gpt-6.2-sol",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/gpt-6.2-sol",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.2-sol",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.2-sol-pro",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.2-sol-pro:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-6.2-sol:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-audio",
+      "input_usd_m": 2.5,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-audio-mini",
+      "input_usd_m": 0.6,
+      "output_usd_m": 2.4
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-chat-latest",
+      "input_usd_m": 5.0,
+      "output_usd_m": 30.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "novita::openai/gpt-oss-120b",
+      "input_usd_m": 0.05,
+      "output_usd_m": 0.25
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-oss-120b",
+      "input_usd_m": 0.05,
+      "output_usd_m": 0.25
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::openai/gpt-oss-120b",
+      "input_usd_m": 0.05,
+      "output_usd_m": 0.45
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "together::openai/gpt-oss-120b",
+      "input_usd_m": 0.15,
+      "output_usd_m": 0.6
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-oss-120b:batch",
+      "input_usd_m": 0.0296,
+      "output_usd_m": 0.136
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-oss-20b",
+      "input_usd_m": 0.03,
+      "output_usd_m": 0.13
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "siliconflow::openai/gpt-oss-20b",
+      "input_usd_m": 0.04,
+      "output_usd_m": 0.18
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-oss-20b:batch",
+      "input_usd_m": 0.024,
+      "output_usd_m": 0.112
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/gpt-oss-safeguard-20b",
+      "input_usd_m": 0.075,
+      "output_usd_m": 0.3
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/o3",
+      "input_usd_m": 2.0,
+      "output_usd_m": 8.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/o3",
+      "input_usd_m": 2.0,
+      "output_usd_m": 8.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/o3-mini:batch",
+      "input_usd_m": 0.55,
+      "output_usd_m": 2.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openai::openai/o3-pro",
+      "input_usd_m": 20.0,
+      "output_usd_m": 80.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/o3-pro",
+      "input_usd_m": 20.0,
+      "output_usd_m": 80.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/o3:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 4.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::openai/o4-mini:batch",
+      "input_usd_m": 0.55,
+      "output_usd_m": 2.2
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-2.5-flash",
+      "input_usd_m": 0.3,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-2.5-flash",
+      "input_usd_m": 0.3,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-2.5-flash-image",
+      "input_usd_m": 0.3,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-2.5-flash-lite",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.4
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-2.5-flash-lite",
+      "input_usd_m": 0.1,
+      "output_usd_m": 0.4
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-2.5-pro",
+      "input_usd_m": 1.25,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-2.5-pro",
+      "input_usd_m": 1.25,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-2.5-pro-preview",
+      "input_usd_m": 1.25,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-3-flash-preview",
+      "input_usd_m": 0.5,
+      "output_usd_m": 3.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3-flash-preview",
+      "input_usd_m": 0.5,
+      "output_usd_m": 3.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3-flash-preview:batch",
+      "input_usd_m": 0.25,
+      "output_usd_m": 1.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3-pro-image",
+      "input_usd_m": 2.0,
+      "output_usd_m": 12.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3-pro-image-preview",
+      "input_usd_m": 2.0,
+      "output_usd_m": 12.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.1-flash-image",
+      "input_usd_m": 0.5,
+      "output_usd_m": 3.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.1-flash-image-preview",
+      "input_usd_m": 0.5,
+      "output_usd_m": 3.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-3.1-flash-lite",
+      "input_usd_m": 0.25,
+      "output_usd_m": 1.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.1-flash-lite",
+      "input_usd_m": 0.25,
+      "output_usd_m": 1.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.1-flash-lite-image",
+      "input_usd_m": 0.25,
+      "output_usd_m": 1.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.1-flash-lite-preview",
+      "input_usd_m": 0.25,
+      "output_usd_m": 1.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.1-flash-lite:batch",
+      "input_usd_m": 0.125,
+      "output_usd_m": 0.75
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-3.1-pro-preview",
+      "input_usd_m": 2.0,
+      "output_usd_m": 12.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.1-pro-preview",
+      "input_usd_m": 2.0,
+      "output_usd_m": 12.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-3.1-pro-preview-customtools",
+      "input_usd_m": 2.0,
+      "output_usd_m": 12.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.1-pro-preview-customtools",
+      "input_usd_m": 2.0,
+      "output_usd_m": 12.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.1-pro-preview:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 6.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-3.5-flash",
+      "input_usd_m": 1.5,
+      "output_usd_m": 9.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.5-flash",
+      "input_usd_m": 1.5,
+      "output_usd_m": 9.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-3.5-flash-lite",
+      "input_usd_m": 0.3,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.5-flash-lite",
+      "input_usd_m": 0.3,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.5-flash-lite:batch",
+      "input_usd_m": 0.15,
+      "output_usd_m": 1.25
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.5-flash:batch",
+      "input_usd_m": 0.75,
+      "output_usd_m": 4.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-3.6-flash",
+      "input_usd_m": 0.75,
+      "output_usd_m": 3.75
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.6-flash",
+      "input_usd_m": 0.75,
+      "output_usd_m": 3.75
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.6-flash:batch",
+      "input_usd_m": 0.375,
+      "output_usd_m": 1.875
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-3.7-flash",
+      "input_usd_m": 0.75,
+      "output_usd_m": 3.75
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.7-flash",
+      "input_usd_m": 0.75,
+      "output_usd_m": 3.75
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.7-flash:batch",
+      "input_usd_m": 0.375,
+      "output_usd_m": 1.875
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-3.8-flash",
+      "input_usd_m": 0.75,
+      "output_usd_m": 3.75
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.8-flash",
+      "input_usd_m": 0.825,
+      "output_usd_m": 4.125
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-3.8-flash:batch",
+      "input_usd_m": 0.375,
+      "output_usd_m": 1.875
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-4-argon",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-4-argon",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-4-argon:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-4-carbon",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-4-carbon",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-4-carbon:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-4-hydrogen",
+      "input_usd_m": 1.5,
+      "output_usd_m": 7.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-4-hydrogen",
+      "input_usd_m": 1.5,
+      "output_usd_m": 7.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-4-hydrogen:batch",
+      "input_usd_m": 0.75,
+      "output_usd_m": 3.75
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-4-neon",
+      "input_usd_m": 3.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-4-neon",
+      "input_usd_m": 3.0,
+      "output_usd_m": 15.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-4-neon:batch",
+      "input_usd_m": 1.5,
+      "output_usd_m": 7.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-flash-latest",
+      "input_usd_m": 0.75,
+      "output_usd_m": 3.75
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "google::google/gemini-flash-lite-latest",
+      "input_usd_m": 0.3,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-nano-banana-2.1",
+      "input_usd_m": 1.5,
+      "output_usd_m": 7.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-omni-1.1-flash",
+      "input_usd_m": 1.5,
+      "output_usd_m": 9.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::google/gemini-omni-1.2-flash",
+      "input_usd_m": 1.5,
+      "output_usd_m": 9.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::xai/grok-4.20",
+      "input_usd_m": 1.25,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "xai::xai/grok-4.20-0309-non-reasoning",
+      "input_usd_m": 1.25,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "xai::xai/grok-4.20-0309-reasoning",
+      "input_usd_m": 1.25,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::xai/grok-4.20-multi-agent",
+      "input_usd_m": 1.25,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "xai::xai/grok-4.20-multi-agent-0309",
+      "input_usd_m": 1.25,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::xai/grok-4.3",
+      "input_usd_m": 1.25,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "xai::xai/grok-4.3",
+      "input_usd_m": 1.25,
+      "output_usd_m": 2.5
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::xai/grok-4.3:batch",
+      "input_usd_m": 1.0,
+      "output_usd_m": 2.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::xai/grok-4.5",
+      "input_usd_m": 2.0,
+      "output_usd_m": 6.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "xai::xai/grok-4.5",
+      "input_usd_m": 2.0,
+      "output_usd_m": 6.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::xai/grok-4.6",
+      "input_usd_m": 2.0,
+      "output_usd_m": 6.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "xai::xai/grok-4.6",
+      "input_usd_m": 2.0,
+      "output_usd_m": 6.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::xai/grok-4.6:batch",
+      "input_usd_m": 1.6,
+      "output_usd_m": 4.8
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::xai/grok-4.7",
+      "input_usd_m": 2.0,
+      "output_usd_m": 6.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "xai::xai/grok-4.7",
+      "input_usd_m": 2.0,
+      "output_usd_m": 6.0
+    },
+    {
+      "at": "2026-11-24T09:18:12+08:00",
+      "id": "openrouter::xai/grok-4.7:batch",
+      "input_usd_m": 1.6,
+      "output_usd_m": 4.8
+    }
+  ],
+  "schema_version": 1
 }
