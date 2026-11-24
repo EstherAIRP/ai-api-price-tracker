@@ -20,7 +20,18 @@
     const newExcess = Math.max(0, overAfter - overBefore);
     return {listPriceCost, newExcess, fee: newExcess * rule.excess_rate, totalEstimate: listPriceCost + newExcess * rule.excess_rate};
   }
-  const api = Object.freeze({inferenceCost, topup, byok});
+  // Frontend-only, indicative prepaid-credit fee uplift; original quotes remain unchanged.
+  function adjustedQuote(quote, planName, policy) {
+    if (!quote || !valid(quote.input_usd_m) || !valid(quote.output_usd_m)) return null;
+    if (quote.provider !== 'OpenRouter') return {...quote};
+    if (planName !== 'standard' && planName !== 'business') return null;
+    const rate = policy?.providers?.OpenRouter?.[planName]?.credit_purchase_rate;
+    if (!valid(rate) || rate > 1) return null;
+    return {...quote,
+      input_usd_m: quote.input_usd_m * (1 + rate),
+      output_usd_m: quote.output_usd_m * (1 + rate)};
+  }
+  const api = Object.freeze({inferenceCost, topup, byok, adjustedQuote});
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window !== 'undefined') window.ApiFees = api;
 })(typeof globalThis === 'object' ? globalThis : this);

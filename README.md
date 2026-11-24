@@ -6,7 +6,7 @@
 
 - 所有價格統一為 **USD / 1,000,000 文字 Token**（輸入與輸出分開顯示）。
 - 可依模型系列、平台、關鍵字篩選及排序；可比較同一模型的多平台報價。
-- 支援 Token 成本估算、OpenRouter Standard / Business 儲值費試算、BYOK 超額平台費試算，以及價格變動紀錄。
+- 網站僅提供 **Standard / Business** 方案切換：OpenRouter 的輸入、輸出、合計與成本試算顯示價格均直接乘上對應儲值費率倍率，並在價格旁提供驚嘆號說明；其他平台維持原始牌價。
 - 不顯示虛構或人工填入的價目表。若來源失敗，保留前次有效值並標示其狀態。
 - 09:00（Asia/Taipei）抓取暫存；12:00 自動驗證、發布並提交到 GitHub；無需人工批准。
 - Python 標準函式庫實作資料蒐集；網站為純 HTML/CSS/JS，無付費 LLM 或後端需求。
@@ -98,8 +98,9 @@ License: MIT
 ## 平台手續費與試算限制
 
 - OpenRouter Standard 非加密貨幣儲值 5.5%，最低 $0.80；Business 8%。手續費只在購買點數時支付，**不是每次 Token 使用後再抽成**。
-- BYOK 每月先有 $25,000 按 OpenRouter 牌價核算的免平台費推論額度，超出部分 OpenRouter 額外收取 5%；BYOK 模型費由原供應商另行直接收費。網站以 OpenRouter 牌價**代理估算**原廠費用，並非原廠結帳價。
-- Enterprise 依合約計價，不估算固定費率。
-- 儲值費不能與單次 Token 費直接相加視為同一筆支出；其他平台未建檔的手續費均標註「未建檔」。
+- BYOK 和 Enterprise 規則仍保留在政策資料中供未來需要時使用，但不在目前網頁的價格篩選與試算介面出現。
+- 網站不提供 BYOK／Enterprise 比價模式，也不單列「平台費率」欄；其他平台尚未建檔的額外費用，**不代表不存在**。
+- 顯示的 OpenRouter 含費價為 **原始 Token 牌價 × 1.055（Standard）／1.08（Business）** 的等效比較價。實際儲值時才收費，並非每次 Token 重新加收；Standard 最低收費 $0.80，故小額儲值有效費率可能較高。
+- JSON 每日原始價與歷史價格保持未加價；只有前端展示與試算套用倍率，避免重複加成。
 - 政策來源：[官方定價](https://openrouter.ai/pricing)、[平台費與最低儲值費公告](https://openrouter.ai/blog/simplifying-our-platform-fee/)。政策與模型單價更新頻率分開。
 - 本功能的 JS 計算測試：`node --test tests/test_fees.cjs`。

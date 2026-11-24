@@ -32,3 +32,28 @@ test('Reject invalid prices or negative inputs', () => {
   assert.equal(fees.inferenceCost({input_usd_m:2,output_usd_m:8}, -1,10),null);
   assert.equal(fees.byok(10,-1,cfg.byok),null);
 });
+
+test('OpenRouter Standard prices are 1.055x without changing source catalog', () => {
+  const q = {provider:'OpenRouter', input_usd_m:2, output_usd_m:10};
+  const shown = fees.adjustedQuote(q,'standard',policy);
+  assert.ok(Math.abs(shown.input_usd_m-2.11)<1e-12);
+  assert.ok(Math.abs(shown.output_usd_m-10.55)<1e-12);
+  assert.equal(q.input_usd_m,2);
+  assert.equal(q.output_usd_m,10);
+});
+test('OpenRouter Business prices are 1.08x, including calculator values', () => {
+  const q = {provider:'OpenRouter', input_usd_m:2, output_usd_m:10};
+  const shown = fees.adjustedQuote(q,'business',policy);
+  assert.equal(shown.input_usd_m,2.16);
+  assert.equal(shown.output_usd_m,10.8);
+  assert.ok(Math.abs(fees.inferenceCost(shown,1000000,1000000)-12.96)<1e-12);
+});
+test('Other providers are unaffected by plan switch', () => {
+  const q = {provider:'OpenAI', input_usd_m:3, output_usd_m:9};
+  assert.deepEqual(fees.adjustedQuote(q,'business',policy),q);
+});
+test('Missing fee policy or unsupported plan never silently shows unadjusted OpenRouter price', () => {
+  const q = {provider:'OpenRouter', input_usd_m:2, output_usd_m:10};
+  assert.equal(fees.adjustedQuote(q,'byok',policy),null);
+  assert.equal(fees.adjustedQuote(q,'standard',null),null);
+});

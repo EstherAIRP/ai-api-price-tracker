@@ -2,7 +2,7 @@
 
 const state = {
   quotes: [], history: [], family: 'all', search: '', provider: 'all',
-  sort: 'model', selectedQuoteId: null, feePolicies: null,
+  sort: 'model', selectedQuoteId: null, feePolicies: null, plan: 'standard',
 };
 const $ = id => document.getElementById(id);
 const dollars = value => {
@@ -31,6 +31,77 @@ function safeLink(url) {
   } catch { return '#'; }
 }
 
+function currentFeeRate() {
+  const rate = state.feePolicies?.providers?.OpenRouter?.[state.plan]?.credit_purchase_rate;
+  return typeof rate === 'number' && Number.isFinite(rate) && rate >= 0 && rate <= 1 ? rate : null;
+}
+function quoteWithFees(q) {
+  return window.ApiFees.adjustedQuote(q, state.plan, state.feePolicies);
+}
+function priceValue(q, key) {
+  const shown = quoteWithFees(q);
+  return shown ? (key === 'total' ? shown.input_usd_m + shown.output_usd_m : shown[key]) : null;
+}
+let activeFeeButton = null;
+let feePopoverPinned = false;
+function hideFeePopover() {
+  const popover = $('feePopover');
+  if (popover) popover.hidden = true;
+  if (activeFeeButton) activeFeeButton.setAttribute('aria-expanded', 'false');
+  activeFeeButton = null;
+  feePopoverPinned = false;
+}
+function showFeePopover(button, pinned = false) {
+  const tooltip = $('feePopover');
+  if (!tooltip) return;
+  if (activeFeeButton && activeFeeButton !== button) activeFeeButton.setAttribute('aria-expanded', 'false');
+  const rate = currentFeeRate();
+  const pct = rate === null ? null : (rate * 100).toFixed(1).replace(/\.0$/, '');
+  tooltip.replaceChildren();
+  tooltip.append(el('strong', '', pct === null ? '平台費率資料未載入' : '已含平台費用（' + pct + '%）'));
+  tooltip.append(el('span', '', pct === null ? '目前無法計算 OpenRouter 的含費參考價。' :
+    '依 ' + (state.plan === 'standard' ? 'Standard' : 'Business') + ' 儲值手續費等比例換算，非逐筆推論加收。' +
+    (state.plan === 'standard' ? '小額儲值另有最低 $0.80 手續費。' : '')));
+  tooltip.hidden = false;
+  const rect = button.getBoundingClientRect();
+  const width = tooltip.offsetWidth;
+  const left = Math.max(10, Math.min(window.innerWidth - width - 10, rect.left + rect.width / 2 - width / 2));
+  const top = rect.bottom + tooltip.offsetHeight + 10 > window.innerHeight && rect.top > tooltip.offsetHeight + 12
+    ? rect.top - tooltip.offsetHeight - 8 : rect.bottom + 8;
+  tooltip.style.left = left + 'px';
+  tooltip.style.top = top + 'px';
+  activeFeeButton = button;
+  feePopoverPinned = pinned;
+  button.setAttribute('aria-expanded', String(pinned));
+}
+function feeButton() {
+  const button = el('button', 'fee-info-button', '!');
+  const rate = currentFeeRate();
+  button.type = 'button';
+  button.setAttribute('aria-label', rate === null ? 'OpenRouter 費率無法載入，查看說明' : '查看 OpenRouter 已含平台費用（' + (rate * 100).toFixed(1) + '%）的說明');
+  button.setAttribute('aria-expanded', 'false');
+  button.setAttribute('aria-controls', 'feePopover');
+  button.addEventListener('mouseenter', () => { if (!feePopoverPinned) showFeePopover(button); });
+  button.addEventListener('mouseleave', () => { if (!feePopoverPinned) hideFeePopover(); });
+  button.addEventListener('focus', () => { if (!feePopoverPinned) showFeePopover(button); });
+  button.addEventListener('blur', () => { if (!feePopoverPinned) hideFeePopover(); });
+  button.addEventListener('click', event => {
+    event.stopPropagation();
+    if (feePopoverPinned && activeFeeButton === button) hideFeePopover();
+    else showFeePopover(button, true);
+  });
+  button.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') event.stopPropagation();
+  });
+  return button;
+}
+function appendPrice(node, quote, value) {
+  const wrap = el('span', 'price-with-info');
+  wrap.append(el('span', '', dollars(value)));
+  if (quote.provider === 'OpenRouter') wrap.append(feeButton());
+  node.append(wrap);
+}
+
 function setupListeners() {
   $('families').addEventListener('click', event => {
     const button = event.target.closest('[data-family]');
@@ -48,9 +119,24 @@ function setupListeners() {
   $('sort').addEventListener('change', event => { state.sort = event.target.value; renderTable(); });
   $('inputTokens').addEventListener('input', renderCalculator);
   $('outputTokens').addEventListener('input', renderCalculator);
-  $('feeMode').addEventListener('change', renderCalculator);
-  $('creditAmount').addEventListener('input', renderCalculator);
-  $('byokPrior').addEventListener('input', renderCalculator);
+  $('billingPlans').addEventListener('click', event => {
+    const button = event.target.closest('[data-plan]');
+    if (!button || state.plan === button.dataset.plan) return;
+    state.plan = button.dataset.plan;
+    hideFeePopover();
+    for (const option of document.querySelectorAll('[data-plan]')) {
+      const active = option === button;
+      option.classList.toggle('active', active);
+      option.setAttribute('aria-pressed', String(active));
+    }
+    renderTable();
+    renderDetail();
+  });
+  document.addEventListener('click', event => {
+    if (feePopoverPinned && !event.target.closest('.fee-info-button')) hideFeePopover();
+  });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape') hideFeePopover(); });
+  window.addEventListener('resize', hideFeePopover);
 }
 
 function filteredQuotes() {
@@ -60,10 +146,14 @@ function filteredQuotes() {
     const haystack = `${q.model_id} ${q.model_name} ${q.provider}`.toLowerCase();
     return haystack.includes(state.search);
   });
-  const byNumber = ({input: 'input_usd_m', output: 'output_usd_m'})[state.sort];
-  items.sort((a, b) => {
-    if (byNumber) return a[byNumber] - b[byNumber] || a.model_id.localeCompare(b.model_id);
-    if (state.sort === 'total') return a.input_usd_m + a.output_usd_m - b.input_usd_m - b.output_usd_m;
+  const orderKey = ({input:'input_usd_m', output:'output_usd_m', total:'total'})[state.sort];
+  items.sort((a,b) => {
+    if (orderKey) {
+      const aValue = priceValue(a,orderKey), bValue = priceValue(b,orderKey);
+      if (aValue === null && bValue !== null) return 1;
+      if (bValue === null && aValue !== null) return -1;
+      if (aValue !== null && bValue !== null && aValue !== bValue) return aValue - bValue;
+    }
     return a.model_id.localeCompare(b.model_id) || a.provider.localeCompare(b.provider);
   });
   return items;
@@ -72,6 +162,7 @@ function filteredQuotes() {
 function renderTable() {
   const quotes = filteredQuotes();
   const tbody = $('priceRows');
+  hideFeePopover();
   tbody.replaceChildren();
   $('shownCount').textContent = `${quotes.length.toLocaleString('zh-TW')} 筆報價`;
   $('emptyState').hidden = quotes.length > 0;
@@ -92,18 +183,18 @@ function renderTable() {
     modelCell.append(el('strong', '', q.model_id), el('small', '', q.family));
     const providerCell = el('td', 'provider-cell', q.provider);
     providerCell.append(el('span', 'type-tag', q.provider_type === 'official_channel' ? '官方通路＊' : '第三方'));
-    const inputCell = el('td', 'num dollar', dollars(q.input_usd_m));
-    const outputCell = el('td', 'num dollar', dollars(q.output_usd_m));
-    const totalCell = el('td', 'num sum', dollars(q.input_usd_m + q.output_usd_m));
-    const feeCell = el('td', 'fee-table-cell');
-    feeCell.append(el('span', q.provider === 'OpenRouter' && state.feePolicies?.providers?.OpenRouter ? 'fee-known' : 'fee-unknown',
-      q.provider === 'OpenRouter' && state.feePolicies?.providers?.OpenRouter ? '儲值 5.5% 起 · 詳情' : '未建檔'));
+    const inputCell = el('td', 'num dollar');
+    const outputCell = el('td', 'num dollar');
+    const totalCell = el('td', 'num sum');
+    appendPrice(inputCell, q, priceValue(q, 'input_usd_m'));
+    appendPrice(outputCell, q, priceValue(q, 'output_usd_m'));
+    appendPrice(totalCell, q, priceValue(q, 'total'));
     const sourceCell = el('td');
     const src = el('span', 'source-tag' + (q.verification === 'provider_api' ? ' direct' : '') + (q.status !== 'current' ? ' stale' : ''),
       q.status === 'anomaly_hold' ? '異常暫緩' : q.status === 'stale' ? '前次有效值' : q.verification === 'provider_api' ? '平台 API' : '社群彙整');
     sourceCell.append(src);
     const arrow = el('td', 'open-arrow', '↗');
-    tr.append(modelCell, providerCell, inputCell, outputCell, totalCell, feeCell, sourceCell, arrow);
+    tr.append(modelCell, providerCell, inputCell, outputCell, totalCell, sourceCell, arrow);
     const choose = () => { state.selectedQuoteId = q.id; renderTable(); renderDetail();
       if (window.matchMedia('(max-width: 750px)').matches) $('comparison').scrollIntoView({behavior:'smooth'});
     };
@@ -117,7 +208,7 @@ function renderDetail() {
   const chosen = state.quotes.find(q => q.id === state.selectedQuoteId);
   if (!chosen) return;
   const peers = state.quotes.filter(q => q.model_id === chosen.model_id)
-    .sort((a,b) => a.input_usd_m + a.output_usd_m - b.input_usd_m - b.output_usd_m);
+    .sort((a,b) => (priceValue(a,'total') ?? Infinity) - (priceValue(b,'total') ?? Infinity));
   const detail = $('modelDetail');
   detail.className = '';
   detail.replaceChildren();
@@ -131,14 +222,17 @@ function renderDetail() {
   const table = el('table', 'mini-table');
   const thead = el('thead');
   const headerRow = el('tr');
-  for (const name of ['平台', '輸入', '輸出', '平台費', '來源']) headerRow.append(el('th', '', name));
+  for (const name of ['平台', '輸入', '輸出', '來源']) headerRow.append(el('th', '', name));
   thead.append(headerRow);
   const tbody = el('tbody');
   for (const q of peers) {
     const row = el('tr');
     if (q.id === chosen.id) row.className = 'selected';
-    row.append(el('td', '', q.provider), el('td', '', dollars(q.input_usd_m)),
-      el('td', '', dollars(q.output_usd_m)), el('td', '', q.provider === 'OpenRouter' && state.feePolicies?.providers?.OpenRouter ? '儲值 5.5% 起' : '未建檔'));
+    const inputCell = el('td');
+    const outputCell = el('td');
+    appendPrice(inputCell, q, priceValue(q, 'input_usd_m'));
+    appendPrice(outputCell, q, priceValue(q, 'output_usd_m'));
+    row.append(el('td', '', q.provider), inputCell, outputCell);
     const anchorCell = el('td');
     const a = el('a', '', '報價 ↗');
     a.href = safeLink(q.source_url); a.target = '_blank'; a.rel = 'noopener noreferrer';
@@ -148,7 +242,7 @@ function renderDetail() {
   table.append(thead, tbody);
   detail.append(table);
   detail.append(el('p','source-note','＊「官方通路」價格由第三方資料庫彙整，並非直接擷取官方網頁。'));
-  $('calcModel').textContent = `${chosen.provider} · ${chosen.model_id}`;
+  $('calcModel').textContent = chosen.provider + (chosen.provider === 'OpenRouter' ? ' (' + (state.plan === 'standard' ? 'Standard' : 'Business') + ')' : '') + ' · ' + chosen.model_id;
   renderCalculator();
   renderChart(chosen);
 }
@@ -158,66 +252,22 @@ function positiveNumberInput(id, allowZero = true) {
   const value = Number(raw);
   return Number.isFinite(value) && (allowZero ? value >= 0 : value > 0) ? value : null;
 }
-function addFeeRow(parent, name, value, strong = false) {
-  const row = el('div', 'fee-result-row' + (strong ? ' strong' : ''));
-  row.append(el('span', '', name), el('b', '', value));
-  parent.append(row);
-}
-function renderFeeCalculator(chosen, inference) {
-  const feeConfig = state.feePolicies?.providers?.OpenRouter;
-  const isRouter = chosen?.provider === 'OpenRouter' && feeConfig;
-  $('openRouterFeePanel').hidden = !isRouter;
-  $('feeNonOpenRouter').hidden = !!isRouter;
-  $('feeNonOpenRouter').textContent = chosen?.provider === 'OpenRouter'
-    ? '平台費率資料載入失敗，請以官方價格頁為準。'
-    : '目前僅建檔 OpenRouter 的手續費；其他平台「未建檔」不等於免費。';
-  if (!isRouter) return;
-  const mode = $('feeMode').value;
-  const byok = mode === 'byok';
-  const enterprise = mode === 'enterprise';
-  $('feeTopupControls').hidden = byok || enterprise;
-  $('feeByokControls').hidden = !byok;
-  $('feeDisclaimer').textContent = byok
-    ? '估算採 OpenRouter 公開模型牌價作為參考；原廠帳單、平台費的儲值成本及稅額另計。'
-    : '儲值金額是購買點數的付款試算，不能和單次 Token 使用成本相加當作相同支出。';
-  const out = $('feeResult');
-  out.replaceChildren();
-  if (enterprise) {
-    out.append(el('p', 'fee-help', 'Enterprise 依個別合約計價，無法用固定比例推估。'));
-    return;
-  }
-  if (inference === null) {
-    out.append(el('p', 'fee-error', '請先輸入有效的 Token 數量。'));
-    return;
-  }
-  if (byok) {
-    const prior = positiveNumberInput('byokPrior');
-    const result = prior === null ? null : window.ApiFees.byok(inference, prior, feeConfig.byok);
-    if (!result) { out.append(el('p', 'fee-error', '請輸入有效的本月 BYOK 先前用量。')); return; }
-    addFeeRow(out, '本次模型牌價估算', money(result.listPriceCost));
-    addFeeRow(out, '本次超出免費額度的用量', money(result.newExcess));
-    addFeeRow(out, 'OpenRouter 額外平台費 (5%)', money(result.fee));
-    addFeeRow(out, '推論＋平台費參考合計', money(result.totalEstimate), true);
-    return;
-  }
-  const credits = positiveNumberInput('creditAmount', false);
-  const rule = feeConfig[mode];
-  const result = credits === null || credits > 1e8 ? null : window.ApiFees.topup(credits, rule);
-  if (!result) { out.append(el('p', 'fee-error', '請輸入有效的儲值點數金額。')); return; }
-  addFeeRow(out, '購買點數', money(result.credits));
-  addFeeRow(out, `儲值手續費 (${(rule.credit_purchase_rate*100).toFixed(1)}%)`, money(result.fee));
-  addFeeRow(out, '本次儲值預計付款', money(result.payment), true);
-  out.append(el('p', 'fee-help', `本次選定模型的 Token 推論估算為 ${dollars(inference)}，使用時從點數餘額扣除。`));
-}
 function renderCalculator() {
   const chosen = state.quotes.find(q => q.id === state.selectedQuoteId);
-  if (!chosen) { $('calcPrice').textContent = '—'; renderFeeCalculator(null, null); return; }
+  const output = $('calcPrice');
+  output.replaceChildren();
+  if (!chosen) { output.textContent = '—'; return; }
   const inp = positiveNumberInput('inputTokens');
   const out = positiveNumberInput('outputTokens');
+  const displayed = quoteWithFees(chosen);
   const total = inp === null || out === null || inp > 1e10 || out > 1e10 ? null
-    : window.ApiFees.inferenceCost(chosen, inp, out);
-  $('calcPrice').textContent = total === null ? '輸入數量無效' : dollars(total);
-  renderFeeCalculator(chosen, total);
+    : window.ApiFees.inferenceCost(displayed, inp, out);
+  if (!displayed) output.textContent = '平台費率資料無法載入';
+  else if (total === null) output.textContent = '輸入數量無效';
+  else appendPrice(output, chosen, total);
+  $('calcNote').textContent = chosen.provider === 'OpenRouter'
+    ? '已按儲值手續費換算為含費參考價；非逐筆推論加收。Standard 小額儲值最低 $0.80，稅、快取與特殊級距另計。'
+    : '依模型牌價估算；未建檔的平台費、稅、快取與特殊級距另計。';
 }
 
 function renderChart(chosen) {
@@ -226,7 +276,7 @@ function renderChart(chosen) {
     .sort((a, b) => new Date(a.at) - new Date(b.at)).slice(-90);
   $('chartPlaceholder').hidden = events.length > 0;
   if (!events.length) return;
-  const points = events.map(e => e.input_usd_m);
+  const points = events.map(e => chosen.provider === 'OpenRouter' && currentFeeRate() !== null ? e.input_usd_m * (1 + currentFeeRate()) : e.input_usd_m);
   const yMin = Math.min(...points), yMax = Math.max(...points), spread = Math.max(yMax - yMin, 0.001);
   const xy = points.map((v,i) => [17 + (events.length === 1 ? 0 : i * 446 / (events.length-1)), 100 - (v-yMin)/spread * 75]);
   const svgNS='http://www.w3.org/2000/svg';
@@ -259,7 +309,7 @@ async function init() {
         const policies = await feeResponse.json();
         if (policies?.schema_version === 1 && policies.providers?.OpenRouter) {
           state.feePolicies = policies;
-          $('feePolicyDate').textContent = `政策核對：${policies.last_verified_at}`;
+
         }
       } catch (e) { console.warn('Fee policy unavailable:', e); }
     }
