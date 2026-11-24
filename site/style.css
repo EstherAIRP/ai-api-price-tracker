@@ -23,7 +23,7 @@
 .quick-nav{display:none;padding:10px 12px;border:1px solid #cce0e4;border-radius:9px;background:#fff;color:var(--teal);font-size:12px;font-weight:750;text-decoration:none;white-space:nowrap}
 .estimate-hero{min-height:290px}
 .estimate-form{padding:0 29px 25px}
-.scenario-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.scenario-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .scenario-grid label{display:flex;flex-direction:column;font-size:12px;font-weight:750;color:#4d687b;min-width:0}
 .scenario-grid small{font-size:10px;color:#92a1b0;font-weight:400;margin:5px 0 9px;min-height:15px}
 .scenario-grid input{display:block;width:100%;border:1px solid #e1e9ef;background:#f9fbfc;border-radius:9px;padding:12px 13px;font-variant-numeric:tabular-nums;font-size:14px;color:#203c50;outline-color:#74c3cb}

@@ -60,11 +60,11 @@
       <div class="estimate-form">
         <div class="scenario-grid">
           <label>固定 Prompt <small>每次重送的規則／角色設定</small><input type="number" id="promptTokens" min="0" step="1" value="2000" inputmode="numeric"></label>
-          <label>使用者輸入 <small>單次新的使用者訊息</small><input type="number" id="userTokens" min="0" step="1" value="500" inputmode="numeric"></label>
           <label>RAG 檢索內容 <small>每次送入模型的文件 Token</small><input type="number" id="ragTokens" min="0" step="1" value="3000" inputmode="numeric"></label>
-          <label>AI 輸出 <small>單次模型回覆 Token</small><input type="number" id="outputTokens" min="0" step="1" value="1000" inputmode="numeric"></label>
           <label>歷史訊息每則 <small>一則歷史對話的平均 Token</small><input type="number" id="historyPerTokens" min="0" step="1" value="500" inputmode="numeric"></label>
           <label>歷史訊息則數 <small>每次請求都帶入相同則數</small><input type="number" id="historyCount" min="0" step="1" value="20" inputmode="numeric"></label>
+          <label>使用者輸入 <small>單次新的使用者訊息</small><input type="number" id="userTokens" min="0" step="1" value="500" inputmode="numeric"></label>
+          <label>AI 輸出 <small>單次模型回覆 Token</small><input type="number" id="outputTokens" min="0" step="1" value="1000" inputmode="numeric"></label>
         </div>
         <p class="scenario-help">備註：中文可粗略視為 1 字約 1 Token；其他語言及標點依模型分詞方式而異。本頁直接以輸入的 Token 數計算。</p>
         <div class="scenario-summary" id="scenarioSummary">
