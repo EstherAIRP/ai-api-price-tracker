@@ -301,7 +301,7 @@ async function init() {
       fetch('./data/history.json', {cache:'no-store'}),
       fetch('./data/provider-fees.json', {cache:'no-store'}),
     ]);
-    if (!pricesResponse.ok || !historyResponse.ok) throw new Error('HTTP status error');
+    if (!pricesResponse.ok || !historyResponse.ok) throw new Error(`資料請求失敗（價格 HTTP ${pricesResponse.status}、歷史 HTTP ${historyResponse.status}）`);
     const prices = await pricesResponse.json();
     const history = await historyResponse.json();
     if (feeResponse.ok) {
@@ -313,7 +313,8 @@ async function init() {
         }
       } catch (e) { console.warn('Fee policy unavailable:', e); }
     }
-    if (!Array.isArray(prices.quotes) || !Array.isArray(history.events)) throw new Error('Unexpected data schema');
+    if (!Array.isArray(prices.quotes) || !Array.isArray(history.events)) throw new Error('資料格式不符合網站需求');
+    if (typeof window.ApiFees?.adjustedQuote !== 'function') throw new Error('費率計算程式未載入，請重新整理網站');
     state.quotes = prices.quotes;
     state.history = history.events;
     $('statModels').textContent = new Set(prices.quotes.map(q => q.model_id)).size.toLocaleString('zh-TW');
@@ -327,13 +328,18 @@ async function init() {
     for (const provider of [...new Set(prices.quotes.map(q => q.provider))].sort()) {
       const option = el('option', '', provider); option.value = provider; providerSelect.appendChild(option);
     }
+    $('loadNotice').hidden = true;
     if (prices.quotes.length) {
       state.selectedQuoteId = prices.quotes.find(q => q.family === 'GPT')?.id || prices.quotes[0].id;
       renderDetail();
     }
   } catch (error) {
     console.warn('Unable to read price snapshot:', error);
-    $('emptyText').textContent = '資料檔讀取失敗。請檢查 GitHub Actions 是否成功發布，或稍後重新整理。';
+    $('loadNotice').textContent = `資料載入失敗：${error.message}。請重新整理；若持續失敗，請檢查 GitHub Actions。`;
+    $('loadNotice').hidden = false;
+    $('shownCount').textContent = '價格資料未載入';
+    $('emptyTitle').textContent = '價格資料讀取失敗';
+    $('emptyText').textContent = '網站沒有取得有效資料，並非目前有 0 筆報價。';
   }
   renderTable();
 }

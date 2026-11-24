@@ -110,9 +110,11 @@ jobs:
         with:
           ref: main
       - uses: actions/configure-pages@v5
+      - name: Build cache-safe website and verify price snapshot
+        run: python scripts/build_site.py
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: ./site
+          path: ./dist
           name: github-pages-${{ github.run_attempt }}
       - name: Wait for Pages artifact indexing
         run: sleep 15

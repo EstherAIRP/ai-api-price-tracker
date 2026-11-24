@@ -73,9 +73,10 @@
             <label class="select-wrap"><span>排序</span><select id="sort"><option value="model">模型名稱</option><option value="input">輸入價格 ↑</option><option value="output">輸出價格 ↑</option><option value="total">合計價格 ↑</option></select></label>
           </div>
         </div>
+        <div id="loadNotice" class="load-notice" role="status" aria-live="polite">正在載入價格資料…</div>
         <div class="table-scroll"><table id="priceTable"><thead><tr><th>模型 / 系列</th><th>API 供應平台</th><th class="num">輸入 / 百萬</th><th class="num">輸出 / 百萬</th><th class="num">合計 / 百萬</th><th>資料來源</th><th></th></tr></thead><tbody id="priceRows"></tbody></table></div>
         <div class="empty-state" id="emptyState" hidden><div class="empty-icon" aria-hidden="true">◇</div><h3 id="emptyTitle">尚無價格資料</h3><p id="emptyText">請先執行第一次「full」更新，資料通過驗證後會自動顯示在此。</p></div>
-        <footer class="table-footer"><span id="shownCount">0 筆報價</span><span>OpenRouter 已按方案換算含費參考價；小額儲值最低費與稅金另計</span></footer>
+        <footer class="table-footer"><span id="shownCount">價格資料載入中…</span><span>OpenRouter 已按方案換算含費參考價；小額儲值最低費與稅金另計</span></footer>
       </section>
       <section id="comparison" class="detail-layout" aria-labelledby="detailTitle">
         <div class="detail-card"><div class="section-kicker">MODEL COMPARISON</div><h2 id="detailTitle">挑選模型，查看各平台報價</h2><p class="subtle">點選上方任一模型列，即可查看同一模型在其他平台的價格。</p><div id="modelDetail" class="detail-empty"><span aria-hidden="true">◎</span><p>等待選取模型</p></div></div>

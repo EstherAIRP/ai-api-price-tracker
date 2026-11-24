@@ -6,10 +6,12 @@ on:
     paths:
       - 'scripts/**'
       - 'tests/**'
-      - 'site/app.js'
+      - 'site/**'
       - 'site/fees.js'
       - 'site/data/provider-fees.json'
       - '.github/workflows/ci.yml'
+      - '.github/workflows/pages.yml'
+      - '.github/workflows/daily-prices.yml'
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -30,3 +32,4 @@ jobs:
         with:
           node-version: '22'
       - run: node --check site/app.js && node --check site/fees.js && node --test tests/test_fees.cjs
+      - run: python scripts/build_site.py

@@ -13,3 +13,8 @@
 .fee-popover strong{font-size:12px;display:block;margin-bottom:4px;color:#183d52}
 .fee-popover span{display:block;font-size:11px;color:#6a8091}
 @media(max-width:750px){.billing-filter{gap:8px}.billing-note{width:100%}.billing-option{padding:9px 12px}}
+
+/* Asset loading feedback and a compact billing control, consistent with existing filters. */
+.load-notice{margin:0 29px 16px;padding:11px 14px;border-radius:9px;border:1px solid #d7e7ec;background:#f3fafb;color:#477386;font-size:12px}.load-notice[hidden]{display:none}
+.billing-filter{gap:10px;margin:15px 0 5px;min-height:46px}.billing-label{font-size:11px;color:#728497}.billing-switch{box-shadow:none}.billing-option{min-width:90px}.billing-note{font-size:11px;color:#8495a2}
+@media(max-width:600px){.billing-filter{align-items:center}.billing-option{min-width:78px}.load-notice{margin:0 15px 13px}}
