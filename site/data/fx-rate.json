@@ -1,0 +1,8 @@
+{
+  "base": "USD",
+  "quote": "TWD",
+  "usd_twd": null,
+  "rate_date": null,
+  "source": "https://github.com/fawazahmed0/exchange-api",
+  "updated_at": null
+}

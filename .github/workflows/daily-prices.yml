@@ -75,6 +75,8 @@ jobs:
       - name: Publish validated snapshot
         if: steps.mode.outputs.mode == 'publish' || steps.mode.outputs.mode == 'full'
         run: python scripts/prices.py publish
+      - name: Refresh USD/TWD reference exchange rate
+        run: python scripts/fx.py
       - name: Verify output and run tests
         run: python -m unittest discover -s tests -v
       - name: Commit data changes to default branch without review
@@ -83,7 +85,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- data/staging.json site/data/prices.json site/data/history.json
+          git add -- data/staging.json site/data/prices.json site/data/history.json site/data/fx-rate.json
           if ! git diff --cached --quiet; then
             git commit -m "data: ${MODE} AI API prices $(TZ=Asia/Taipei date +'%Y-%m-%d')"
             git push origin HEAD:main

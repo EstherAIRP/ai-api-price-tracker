@@ -9,6 +9,10 @@
 - 網站僅提供 **Standard / Business** 方案切換：OpenRouter 的輸入、輸出、合計與成本試算顯示價格均直接乘上對應儲值費率倍率，並在價格旁提供驚嘆號說明；其他平台維持原始牌價。
 - 不顯示虛構或人工填入的價目表。若來源失敗，保留前次有效值並標示其狀態。
 - 09:00（Asia/Taipei）抓取暫存；12:00 自動驗證、發布並提交到 GitHub；無需人工批准。
+- **費用預估頁面（/estimate.html）**：保留全部模型與供應平台的查詢、分類和排序。填入 Prompt、使用者輸入、RAG、歷史訊息每則 Token × 則數、輸出 Token，即時比較 1／10／50 次成本。
+- 預估頁預設每次請求皆帶入相同且完整的歷史上下文：10 次即單次成本 × 10，50 次亦同。
+- 有／無 Cache 情境切換；「命中」假設 Prompt＋歷史訊息已預先快取並完全命中，首次寫入費及過期、儲存費另計。沒有快取價格的模型不憑空套用折扣。
+- 費用顯示美金及參考新臺幣：GitHub Actions 每日擷取 USD/TWD 匯率，失敗時保留前一筆；頁面必要時會查詢公開匯率備援。
 - Python 標準函式庫實作資料蒐集；網站為純 HTML/CSS/JS，無付費 LLM 或後端需求。
 
 ## 安裝與上線
@@ -36,8 +40,8 @@
 
 | 台北時間 | 內容 | 檔案 |
 | --- | --- | --- |
-| 09:00 | 擷取公開資料、統一幣別和單位、保存中繼快照 | `data/staging.json` |
-| 12:00 | 確認快照新鮮度、攔截異常價格、保留歷史、發布網站 | `site/data/prices.json`、`site/data/history.json` |
+| 09:00 | 擷取公開價格、保存中繼快照，同步更新 USD/TWD 匯率 | `data/staging.json`、`site/data/fx-rate.json` |
+| 12:00 | 驗證價格並發布網站，必要時更新 USD/TWD 匯率 | `site/data/prices.json`、`site/data/history.json`、`site/data/fx-rate.json` |
 
 使用 GitHub Actions `schedule.timezone: Asia/Taipei`。排程由 GitHub 調度，不保證精確於整點開始。若當天資料未擷取成功或過期，發布會失敗而**不覆蓋現有價目表**。
 
@@ -77,7 +81,12 @@ python -m http.server --directory site 8080
 .github/workflows/daily-prices.yml   # 09:00 擷取、12:00 發布 + 手動更新
 .github/workflows/pages.yml          # 初次與後續網站程式異動自動部署
 scripts/prices.py                    # 價格擷取、標準化與異常防護
-site/index.html                      # 靜態網站
+site/index.html                      # 價目總覽
+site/estimate.html                   # 費用預估獨立頁
+site/estimate.js                     # 篩選、表格和互動
+site/estimate-core.js                # Token／Cache／平台費與匯率純函式
+scripts/fx.py                        # 每日 USD/TWD 參考匯率擷取
+site/data/fx-rate.json              # 最新有效 USD/TWD 報價
 site/style.css
 site/app.js
 site/data/prices.json              # 發布資料（初始為空）
@@ -104,3 +113,13 @@ License: MIT
 - JSON 每日原始價與歷史價格保持未加價；只有前端展示與試算套用倍率，避免重複加成。
 - 政策來源：[官方定價](https://openrouter.ai/pricing)、[平台費與最低儲值費公告](https://openrouter.ai/blog/simplifying-our-platform-fee/)。政策與模型單價更新頻率分開。
 - 本功能的 JS 計算測試：`node --test tests/test_fees.cjs`。
+
+## 預估頁面用法與限制
+
+- 網址：`https://estherairp.github.io/ai-api-price-tracker/estimate.html`。主頁與預估頁使用相同的 `style.css` 與 `prices.json`。
+- 每次輸入 Token = Prompt + 使用者輸入 + RAG +（歷史每則 Token × 歷史則數）；輸出 Token 獨立計費。
+- 累計費用僅將同一次請求的費用分別乘 1、10、50，不逐輪累積上下文。
+- Cache 命中只計可重用前綴（Prompt＋歷史），且需要來源提供 `cache_read_usd_m`；未命中則所有輸入按正常費率。
+- 成本僅供預估：不含長上下文級距、推理隱藏 Token、RAG embedding／重排序、快取建立與存續費、稅或匯差；若不支援或缺少報價，清楚顯示不可估算。
+- 匯率來源：[fawazahmed0/exchange-api](https://github.com/fawazahmed0/exchange-api)。不是實際信用卡／銀行換匯價格。
+- 執行前端測試：`node --test tests/test_estimate.cjs`。

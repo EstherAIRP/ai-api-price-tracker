@@ -28,6 +28,11 @@ class SiteBuildTests(unittest.TestCase):
             self.assertRegex(html, rf'{re.escape(name)}\?v=[a-f0-9]{{12}}')
         self.assertEqual(json.loads((self.dist / 'data/prices.json').read_text())['quotes'][0]['provider'], 'OpenRouter')
         self.assertIn('id="loadNotice"', html)
+        estimate_html = (self.dist / 'estimate.html').read_text(encoding='utf-8')
+        for name in ('style.css', 'estimate-core.js', 'estimate.js'):
+            self.assertRegex(estimate_html, rf'{re.escape(name)}\?v=[a-f0-9]{{12}}')
+        self.assertIn('id="estimateRows"', estimate_html)
+        self.assertEqual(json.loads((self.dist / 'data/prices.json').read_text())['quotes'][0]['provider'], 'OpenRouter')
 
     def test_empty_catalog_is_never_deployed(self):
         (self.source / 'data/prices.json').write_text('{"quotes": []}', encoding='utf-8')

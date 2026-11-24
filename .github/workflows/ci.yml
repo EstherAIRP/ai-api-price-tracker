@@ -31,5 +31,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --check site/app.js && node --check site/fees.js && node --test tests/test_fees.cjs
+      - run: node --check site/app.js && node --check site/fees.js && node --test tests/test_fees.cjs && node --check site/estimate-core.js && node --check site/estimate.js && node --test tests/test_estimate.cjs
       - run: python scripts/build_site.py

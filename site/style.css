@@ -18,3 +18,68 @@
 .load-notice{margin:0 29px 16px;padding:11px 14px;border-radius:9px;border:1px solid #d7e7ec;background:#f3fafb;color:#477386;font-size:12px}.load-notice[hidden]{display:none}
 .billing-filter{gap:10px;margin:15px 0 5px;min-height:46px}.billing-label{font-size:11px;color:#728497}.billing-switch{box-shadow:none}.billing-option{min-width:90px}.billing-note{font-size:11px;color:#8495a2}
 @media(max-width:600px){.billing-filter{align-items:center}.billing-option{min-width:78px}.load-notice{margin:0 15px 13px}}
+
+/* Cost Estimator: inherit the same design tokens, cards, controls and table as the price page. */
+.quick-nav{display:none;padding:10px 12px;border:1px solid #cce0e4;border-radius:9px;background:#fff;color:var(--teal);font-size:12px;font-weight:750;text-decoration:none;white-space:nowrap}
+.estimate-hero{min-height:290px}
+.estimate-form{padding:0 29px 25px}
+.scenario-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.scenario-grid label{display:flex;flex-direction:column;font-size:12px;font-weight:750;color:#4d687b;min-width:0}
+.scenario-grid small{font-size:10px;color:#92a1b0;font-weight:400;margin:5px 0 9px;min-height:15px}
+.scenario-grid input{display:block;width:100%;border:1px solid #e1e9ef;background:#f9fbfc;border-radius:9px;padding:12px 13px;font-variant-numeric:tabular-nums;font-size:14px;color:#203c50;outline-color:#74c3cb}
+.scenario-grid input:focus{border-color:#90c7cf;background:#fff}
+.scenario-help{color:#8d9daa;font-size:11px;line-height:1.8;margin:16px 0 20px}
+.scenario-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.scenario-summary>div{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px;border-radius:10px;background:#f3f8fa;padding:13px 15px}
+.scenario-summary span{color:#738a9a;font-size:11px;flex-basis:100%}
+.scenario-summary strong{color:#197f91;font-size:23px;font-weight:790;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.scenario-summary small{color:#9aaab6;font-size:10px}
+.scenario-error{font-size:12px;color:#b33738;margin:14px 0 0}
+.estimate-switches{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.estimate-switches .billing-filter{margin:15px 0 5px}
+.estimate-cost{min-width:125px}
+.estimate-usd{display:flex;align-items:center;justify-content:flex-end;font-weight:790;font-size:13px;color:#164b61;font-variant-numeric:tabular-nums}
+.estimate-twd{display:block;font-size:10px;color:#8298a7;font-variant-numeric:tabular-nums;line-height:1.9;white-space:nowrap}
+.estimate-unsupported{display:block;color:#9daeb9;font-size:16px}
+.estimate-muted{display:block;color:#9facb8;font-size:9px;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.fx-stat{font-size:26px}
+.estimate-details{min-height:300px}
+.estimate-breakdown{padding:4px 0 5px}
+.estimate-detail-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:space-between;border-bottom:1px solid #eff3f6;padding:10px 0;font-size:12px;color:#74879a}
+.estimate-detail-line strong{color:#1d4c60;font-size:12px;margin-left:auto;font-variant-numeric:tabular-nums}
+.estimate-detail-line small{color:#8ea2b1;min-width:95px;text-align:right;font-variant-numeric:tabular-nums}
+.estimate-detail-total{font-size:12px;font-weight:850;color:#1c5668;margin-top:17px}
+.estimate-round-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:17px 0 0}
+.estimate-round-item{background:#f1f7f9;border:1px solid #e0ecf0;border-radius:9px;padding:11px 10px;min-width:0}
+.estimate-round-item span,.estimate-round-item small{display:block;font-size:10px;color:#8198a7}
+.estimate-round-item strong{display:block;font-size:14px;margin:6px 0;color:#16778b;word-break:break-all}
+.estimate-peers{white-space:nowrap}
+.estimate-peers td,.estimate-peers th{padding:11px 9px;font-size:10px}
+.estimate-warning{background:#fff5e7;border-radius:9px;color:#916530;padding:15px;font-size:12px;line-height:1.7}
+@media(max-width:1100px){
+  .scenario-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .estimate-switches{gap:12px}
+}
+@media(max-width:750px){
+  .quick-nav{display:inline-flex;margin-left:auto;margin-right:12px}
+  .topbar .top-link{display:none}
+  .estimate-hero{min-height:280px}
+  .estimate-form{padding:0 17px 21px}
+  .scenario-grid{gap:10px}
+  .scenario-grid small{min-height:30px}
+  .scenario-summary>div{padding:11px}
+  .scenario-summary strong{font-size:18px}
+  .estimate-switches{gap:4px}
+  .estimate-switches .billing-filter{width:100%;margin:8px 0}
+  .estimate-cost{min-width:117px}
+  .estimate-details{padding:20px 16px}
+  .estimate-round-item{padding:9px 7px}
+  .estimate-round-item strong{font-size:12px}
+}
+@media(max-width:420px){
+  .scenario-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .scenario-grid small{font-size:9px}
+  .scenario-summary{gap:6px}
+  .scenario-summary span{font-size:10px}
+  .scenario-summary strong{font-size:16px}
+}

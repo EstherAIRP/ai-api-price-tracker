@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="在同一組固定 Token 使用條件下，比較 GPT、Gemini、Claude、DeepSeek、Grok 所有 API 平台 1、10、50 次呼叫的預估成本。">
+  <title>費用預估 — API Atlas</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./estimate-core.js" defer></script>
+  <script src="./estimate.js" defer></script>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand" aria-label="API Atlas">
+      <span class="brand-icon" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <div class="brand-label">API <strong>Atlas</strong><small>PRICE INTELLIGENCE</small></div>
+    </div>
+    <nav class="top-nav" aria-label="網站導覽">
+      <a href="./index.html">價格總覽</a>
+      <a href="./estimate.html" class="nav-active" aria-current="page">費用預估</a>
+      <a href="./index.html#comparison">模型比較</a>
+      <a href="#estimateAbout">計算說明</a>
+    </nav>
+    <a class="quick-nav" href="./index.html">價格總覽 ↗</a>
+    <a class="top-link" href="https://github.com/EstherAIRP/ai-api-price-tracker" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <section class="hero estimate-hero" aria-labelledby="estimateTitle">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse"></span> AI API COST ESTIMATOR</div>
+        <h1 id="estimateTitle">同一組 Token，<br><em>比較每一家成本。</em></h1>
+        <p>沿用價格總覽的模型與平台，輸入一次請求的 Token 用量，立即比較 1、10、50 次 API 呼叫的美金與臺幣預估費用。</p>
+        <div class="hero-meta"><span id="snapshotTime"><span class="meta-dot muted"></span> 讀取價格資料中</span><span class="meta-separator"></span><span>固定完整上下文 × API 呼叫次數</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orb orb-one"></div><div class="orb orb-two"></div><div class="art-grid"></div>
+        <div class="art-floating f-one">01 <span>INPUT</span></div>
+        <div class="art-floating f-two">02 <span>ESTIMATE</span></div>
+        <div class="art-floating f-three">03 <span>COMPARE</span></div>
+        <div class="art-line l-one"></div><div class="art-line l-two"></div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="價格資料概況">
+      <article class="stat-card"><div class="stat-name">模型數量 <span class="stat-icon">▦</span></div><div class="stat-number" id="statModels">—</div><div class="stat-caption">目前收錄的不同模型</div></article>
+      <article class="stat-card"><div class="stat-name">價格筆數 <span class="stat-icon">≋</span></div><div class="stat-number" id="statQuotes">—</div><div class="stat-caption">所有 API 供應平台</div></article>
+      <article class="stat-card"><div class="stat-name">供應平台 <span class="stat-icon">⌘</span></div><div class="stat-number" id="statProviders">—</div><div class="stat-caption">官網通路及轉運平台</div></article>
+      <article class="stat-card"><div class="stat-name">USD / TWD <span class="stat-icon">＄</span></div><div class="stat-number fx-stat" id="statFX">—</div><div class="stat-caption" id="fxStamp">正在取得匯率</div></article>
+    </section>
+
+    <section class="main-card" id="scenario">
+      <div class="section-intro">
+        <div><div class="section-kicker">SCENARIO SETTINGS</div><h2>單次請求的 Token 用量</h2>
+          <p>每次請求都帶入相同且完整的歷史上下文；10 次就是單次預估費用 × 10。</p></div>
+        <div class="mini-caption">所有數量均為 Token</div>
+      </div>
+      <div class="estimate-form">
+        <div class="scenario-grid">
+          <label>固定 Prompt <small>每次重送的規則／角色設定</small><input type="number" id="promptTokens" min="0" step="1" value="2000" inputmode="numeric"></label>
+          <label>使用者輸入 <small>單次新的使用者訊息</small><input type="number" id="userTokens" min="0" step="1" value="500" inputmode="numeric"></label>
+          <label>RAG 檢索內容 <small>每次送入模型的文件 Token</small><input type="number" id="ragTokens" min="0" step="1" value="3000" inputmode="numeric"></label>
+          <label>AI 輸出 <small>單次模型回覆 Token</small><input type="number" id="outputTokens" min="0" step="1" value="1000" inputmode="numeric"></label>
+          <label>歷史訊息每則 <small>一則歷史對話的平均 Token</small><input type="number" id="historyPerTokens" min="0" step="1" value="500" inputmode="numeric"></label>
+          <label>歷史訊息則數 <small>每次請求都帶入相同則數</small><input type="number" id="historyCount" min="0" step="1" value="20" inputmode="numeric"></label>
+        </div>
+        <p class="scenario-help">備註：中文可粗略視為 1 字約 1 Token；其他語言及標點依模型分詞方式而異。本頁直接以輸入的 Token 數計算。</p>
+        <div class="scenario-summary" id="scenarioSummary">
+          <div><span>每次輸入</span><strong id="inputTotal">—</strong><small>Token</small></div>
+          <div><span>每次輸出</span><strong id="outputTotal">—</strong><small>Token</small></div>
+          <div><span>快取候選前綴</span><strong id="cacheTotal">—</strong><small>Token</small></div>
+        </div>
+        <p class="scenario-error" id="inputError" role="alert" hidden>請輸入有效且不為負數的整數 Token。</p>
+      </div>
+    </section>
+
+    <section class="main-card" id="prices">
+      <div class="section-intro"><div><div class="section-kicker">ALL PROVIDERS</div><h2>全部平台費用比較</h2>
+        <p>每欄為固定請求用量的累計費用；美金與新臺幣同時顯示。</p></div>
+        <div class="mini-caption">低價不代表模型能力相同</div></div>
+      <div class="filters">
+        <div class="family-chips" id="families" role="group" aria-label="模型系列">
+          <button type="button" class="chip active" data-family="all" aria-pressed="true">全部模型</button>
+          <button type="button" class="chip" data-family="GPT" aria-pressed="false">GPT</button>
+          <button type="button" class="chip" data-family="Gemini" aria-pressed="false">Gemini</button>
+          <button type="button" class="chip" data-family="Claude" aria-pressed="false">Claude</button>
+          <button type="button" class="chip" data-family="DeepSeek" aria-pressed="false">DeepSeek</button>
+          <button type="button" class="chip" data-family="Grok" aria-pressed="false">Grok</button>
+        </div>
+        <div class="estimate-switches">
+          <div class="billing-filter">
+            <span class="billing-label">OpenRouter 方案</span>
+            <div class="billing-switch" id="billingSwitch" role="group" aria-label="OpenRouter 方案">
+              <button class="billing-option active" type="button" data-plan="standard" aria-pressed="true">Standard</button>
+              <button class="billing-option" type="button" data-plan="business" aria-pressed="false">Business</button>
+            </div>
+          </div>
+          <div class="billing-filter">
+            <span class="billing-label">快取情境</span>
+            <div class="billing-switch" id="cacheSwitch" role="group" aria-label="快取情境">
+              <button class="billing-option active" type="button" data-cache="miss" aria-pressed="true">未命中</button>
+              <button class="billing-option" type="button" data-cache="hit" aria-pressed="false">命中 Cache</button>
+            </div>
+          </div>
+        </div>
+        <div class="filter-controls">
+          <label class="search"><span aria-hidden="true">⌕</span><input id="search" placeholder="搜尋模型或平台…" aria-label="搜尋模型或平台" autocomplete="off"></label>
+          <label class="select-wrap"><span>平台</span><select id="provider"><option value="all">全部平台</option></select></label>
+          <label class="select-wrap"><span>排序</span><select id="sort">
+            <option value="cost1">1 次最低價</option>
+            <option value="cost10">10 次最低價</option>
+            <option value="cost50">50 次最低價</option>
+            <option value="model">模型名稱</option>
+            <option value="costHigh">費用由高到低</option>
+          </select></label>
+        </div>
+        <p class="billing-note">命中情境假設每次請求的「固定 Prompt＋歷史訊息」都已預先快取並成功命中；RAG 與新輸入以一般價格計算。無快取讀取報價者顯示「—」。</p>
+      </div>
+      <div class="load-notice" id="loadNotice" role="status" aria-live="polite">正在載入模型與平台價格…</div>
+      <div class="table-scroll"><table id="estimateTable">
+        <thead><tr><th>模型 / 系列</th><th>API 供應平台</th>
+          <th class="num">1 次</th><th class="num">10 次</th><th class="num">50 次</th><th>資料來源</th><th></th></tr></thead>
+        <tbody id="estimateRows"></tbody>
+      </table></div>
+      <div class="empty-state" id="emptyState" hidden><div class="empty-icon">◇</div><h3 id="emptyTitle">尚無可比較資料</h3><p id="emptyText">請調整篩選條件。</p></div>
+      <footer class="table-footer"><span id="shownCount">載入中…</span><span id="rateFooter">臺幣為參考匯率換算，不含匯差、稅或未建檔的平台費。</span></footer>
+    </section>
+
+    <section class="detail-layout" id="comparison">
+      <div class="detail-card estimate-details"><div class="section-kicker">COST BREAKDOWN</div><h2>費用組成</h2>
+        <p class="subtle">點選上方任一價格列，查看輸入、快取、輸出與平台費用的分項估算。</p>
+        <div id="costDetail" class="detail-empty"><span aria-hidden="true">◎</span><p>等待選取模型</p></div>
+      </div>
+      <div class="detail-card estimate-details"><div class="section-kicker">SAME MODEL / PROVIDERS</div><h2>同模型跨平台比較</h2>
+        <p class="subtle">依精確模型 ID 配對，不混用不同版本的報價。</p>
+        <div id="peerDetail" class="detail-empty"><span aria-hidden="true">◎</span><p>等待選取模型</p></div>
+      </div>
+    </section>
+
+    <section id="estimateAbout" class="note-card">
+      <div><div class="section-kicker">ESTIMATE RULES</div><h2>費用計算說明</h2></div>
+      <div class="note-copy">
+        <p><strong>固定情境</strong>：每次輸入相同的 Prompt、RAG、歷史訊息與輸出 Token，因此 10 次與 50 次是單次價格的固定倍數，不模擬對話逐輪增長。</p>
+        <p><strong>快取</strong>：「命中 Cache」是理想化的預熱快取情境，只針對固定 Prompt 與歷史 Token 計算快取讀取價；不含首次建立快取的寫入費、保留時長費或快取失效。各模型的快取門檻與規則可能不同。</p>
+        <p><strong>OpenRouter</strong>：依 Standard 5.5%／Business 8% 儲值手續費攤提為比較用參考價，非逐次請求另加收；Standard 每次儲值最低 $0.80，實際購點付款可能較高。其他平台若有未知平台費，未另外計入。</p>
+        <p><strong>計費範圍</strong>：僅估算標準文字輸入、輸出與已有資料的快取讀取費。未涵蓋圖片／音訊、RAG 向量化與重排序、長上下文級距、隱藏推理 Token、稅金或信用卡匯差。請求也可能超出特定模型上下文限制。</p>
+        <p><strong>匯率</strong>：新臺幣依顯示的 USD/TWD 參考匯率換算；若匯率讀取失敗，會明確顯示缺值而不捏造數字。資料來源為 <a href="https://github.com/fawazahmed0/exchange-api" target="_blank" rel="noopener noreferrer">Currency API</a>。</p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><span>© API Atlas · Public price transparency</span>
+    <span>費用僅為同條件估算，實際價格與用量請以平台帳單為準。</span></footer>
+</div>
+<div id="feePopover" class="fee-popover" role="tooltip" hidden></div>
+</body>
+</html>
