@@ -3,7 +3,7 @@
 const $ = id => document.getElementById(id);
 const core = window.CostCore;
 const state = {quotes:[], policies:null, fx:null, family:'all', search:'', provider:'all',
-  plan:'standard', cache:'miss', currency:'USD', sort:'cost1', sortDir:'asc', selected:null, published:null};
+  plan:'standard', cache:'miss', currency:'USD', sort:'cost1', sortDir:'asc', mobileShown:24, selected:null, published:null};
 const ids = {prompt:'promptTokens', user:'userTokens', rag:'ragTokens',
   output:'outputTokens', historyPer:'historyPerTokens', historyCount:'historyCount'};
 let activeTooltip = null;
@@ -123,6 +123,7 @@ function feeButton() {
 }
 function setChoice(group, selector, value, field) {
   state[field] = value;
+  state.mobileShown = 24;
   for (const button of $(group).querySelectorAll(selector)) {
     const active = button.dataset[field] === value;
     button.classList.toggle('active',active);
@@ -149,12 +150,14 @@ function setupListeners() {
     const button = event.target.closest('[data-currency]:not(:disabled)');
     if (button) setChoice('currencySwitch','[data-currency]',button.dataset.currency,'currency');
   });
-  $('search').addEventListener('input',event=>{state.search=event.target.value.trim().toLowerCase();render();});
-  $('provider').addEventListener('change',event=>{state.provider=event.target.value;render();});
-  $('estimateTable').addEventListener('click',event=>{
+  $('search').addEventListener('input',event=>{state.search=event.target.value.trim().toLowerCase();state.mobileShown=24;render();});
+  $('provider').addEventListener('change',event=>{state.provider=event.target.value;state.mobileShown=24;render();});
+  $('prices').addEventListener('click',event=>{
     const button=event.target.closest('button[data-sort]');
     if(button && toggleSort(button.dataset.sort)) render();
   });
+  $('estimateMore').addEventListener('click',()=>{state.mobileShown+=24;render();});
+  window.matchMedia('(max-width:750px)').addEventListener('change',render);
   document.addEventListener('click',event=>{
     if (activeTooltip && !event.target.closest('.fee-info-button')) hideTooltip();
   });
@@ -165,17 +168,20 @@ function setupListeners() {
 const ESTIMATE_SORT_KEYS=['model','provider','cost1','cost10','cost50','source'];
 function toggleSort(key){
   if(!ESTIMATE_SORT_KEYS.includes(key))return false;
+  state.mobileShown=24;
   if(state.sort===key)state.sortDir=state.sortDir==='asc'?'desc':'asc';
   else {state.sort=key;state.sortDir='asc';}
   return true;
 }
 function updateSortHeaders(){
-  for(const th of document.querySelectorAll('#estimateTable th[data-sort-header]')){
-    const active=th.dataset.sortHeader===state.sort;
-    th.setAttribute('aria-sort',active?(state.sortDir==='asc'?'ascending':'descending'):'none');
-    const indicator=th.querySelector('.sort-indicator');
+  for(const header of document.querySelectorAll('#estimateTable th[data-sort-header], #prices .mobile-sort-item[data-sort-header]')){
+    const active=header.dataset.sortHeader===state.sort;
+    const mobile=header.tagName==='BUTTON';
+    if(mobile)header.setAttribute('aria-pressed',String(active));
+    else header.setAttribute('aria-sort',active?(state.sortDir==='asc'?'ascending':'descending'):'none');
+    const indicator=header.querySelector('.sort-indicator');
     if(indicator)indicator.textContent=active?(state.sortDir==='asc'?'↑':'↓'):'↕';
-    const button=th.querySelector('button[data-sort]');
+    const button=mobile?header:header.querySelector('button[data-sort]');
     if(button)button.title=active
       ?'目前'+(state.sortDir==='asc'?'升序':'降序')+'，點擊改為'+(state.sortDir==='asc'?'降序':'升序')
       :'點擊依此欄升序排列';
@@ -235,8 +241,11 @@ function renderTable(inputs) {
   const tbody=$('estimateRows');
   tbody.replaceChildren();
   const visible=visibleQuotes(inputs);
+  const mobile=window.matchMedia('(max-width:750px)').matches;
+  const shown=mobile?visible.slice(0,state.mobileShown):visible;
+  $('estimateMore').hidden=!mobile || shown.length>=visible.length;
   const fragment=document.createDocumentFragment();
-  for(const q of visible){
+  for(const q of shown){
     const row=el('tr','quote-row'+(state.selected===q.id?' selected':''));
     row.tabIndex=0;
     row.setAttribute('aria-label','查看 '+q.model_id+' 在 '+q.provider+' 的費用明細');
@@ -248,10 +257,12 @@ function renderTable(inputs) {
     for(const n of [1,10,50]){
       const cost=quoteCost(q,inputs,n);
       const td=el('td','num estimate-cost');
+      td.setAttribute('data-label',n+' 次');
       moneyWrap(td,q,cost);
       row.append(td);
     }
-    const source=el('td');
+    const source=el('td','source-cell');
+    source.setAttribute('data-label','資料來源');
     source.append(el('span','source-tag'+(q.verification==='provider_api'?' direct':'')+
       (q.status!=='current'?' stale':''),
       q.status==='stale'?'前次有效值':q.verification==='provider_api'?'平台 API':'社群彙整'));
@@ -269,7 +280,7 @@ function renderTable(inputs) {
     fragment.append(row);
   }
   tbody.append(fragment);
-  $('shownCount').textContent=visible.length.toLocaleString('zh-TW')+' 筆報價';
+  $('shownCount').textContent=visible.length.toLocaleString('zh-TW')+' 筆報價'+(mobile && visible.length?' · 已顯示 '+shown.length.toLocaleString('zh-TW')+' 筆':'');
   $('emptyState').hidden=visible.length>0;
   if(!visible.length){
     $('emptyTitle').textContent=state.quotes.length?'沒有符合條件的價格':'尚無資料';
@@ -333,10 +344,13 @@ function renderDetail(inputs) {
   const rows=el('tbody');
   for(const q of matches){
     const tr=el('tr',q.id===chosen.id?'selected':'');
-    tr.append(el('td','',q.provider));
+    const peerProvider=el('td','',q.provider);
+    peerProvider.setAttribute('data-label','平台');
+    tr.append(peerProvider);
     for(const n of [1,10,50]){
       const r=quoteCost(q,inputs,n);
       const costCell=el('td','estimate-peer-price');
+      costCell.setAttribute('data-label',n+' 次');
       moneyWrap(costCell,q,r);
       tr.append(costCell);
     }

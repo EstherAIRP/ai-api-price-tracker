@@ -101,3 +101,118 @@
 th[aria-sort="ascending"] .sort-button,th[aria-sort="descending"] .sort-button{color:#116f80}
 th[aria-sort="ascending"] .sort-indicator,th[aria-sort="descending"] .sort-indicator{color:#138496}
 th.num .sort-button{margin-left:auto}
+
+
+/* Mobile-first reading layer: desktop retains the existing data table. */
+.mobile-sort-bar,.mobile-load-more{display:none}
+@media(max-width:750px){
+  html,body{max-width:100%;overflow-x:clip}
+  .app-shell{padding:0 12px}
+  .topbar{height:auto;min-height:0;padding:13px 2px 0;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+  .topbar .top-nav{display:flex;order:3;margin:0;width:100%;max-width:100%;height:46px;gap:20px;align-items:center;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;border-top:1px solid var(--line)}
+  .topbar .top-nav::-webkit-scrollbar{display:none}
+  .topbar .top-nav a{flex:0 0 auto;height:45px;white-space:nowrap;font-size:12px}
+  .topbar .quick-nav,.topbar .top-link{display:none}
+  .brand{min-height:38px}
+  .hero,.estimate-hero{min-height:0;margin-top:13px;padding:25px 19px;border-radius:15px}
+  .hero-art{display:none}
+  .hero-copy{width:100%;min-width:0}
+  .hero h1{font-size:clamp(25px,7.2vw,34px);line-height:1.3;letter-spacing:-.8px}
+  .hero p{max-width:100%;font-size:13px;line-height:1.8}
+  .hero-meta{margin-top:16px;display:flex;flex-wrap:wrap;gap:5px 12px;line-height:1.6;font-size:10px}
+  .hero-meta .meta-separator{display:none}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .stat-card{padding:15px 12px;border-radius:12px;min-width:0}
+  .stat-name{font-size:11px}
+  .stat-number,.fx-stat{font-size:24px;overflow-wrap:anywhere}
+  .stat-caption{font-size:10px;line-height:1.5}
+  .main-card{margin-top:14px;border-radius:14px}
+  .section-intro{padding:20px 16px 17px;gap:8px}
+  .section-intro h2{font-size:19px;line-height:1.35}
+  .section-intro p{font-size:12px}
+  .filters{padding:0 16px 16px}
+  .family-chips{flex-wrap:nowrap;gap:7px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding-bottom:14px;margin-right:-16px;padding-right:16px}
+  .family-chips::-webkit-scrollbar{display:none}
+  .family-chips .chip{flex:0 0 auto;min-height:42px;padding:10px 15px}
+  .billing-filter,.estimate-switches .billing-filter{width:100%;display:flex;flex-direction:column;align-items:stretch;gap:7px;min-height:0;margin:12px 0 4px}
+  .billing-label{font-size:12px}
+  .billing-switch{width:100%;min-width:0;max-width:100%}
+  .billing-option{flex:1 1 0;min-width:0;min-height:43px;font-size:12px;padding:9px 8px;white-space:nowrap}
+  .billing-note{font-size:11px;line-height:1.75}
+  .estimate-switches{gap:2px}
+  .filter-controls{margin-top:13px;gap:9px}
+  .search{flex:1 1 100%;min-width:0;height:46px}
+  .search input{font-size:16px;min-width:0}
+  .select-wrap{flex:1 1 100%;min-width:0;width:100%;min-height:45px}
+  .select-wrap select{flex:1;max-width:none;min-width:0;font-size:15px}
+  .mobile-sort-bar{display:flex;align-items:center;gap:7px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:11px 16px 14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#f9fbfc}
+  .mobile-sort-bar::-webkit-scrollbar{display:none}
+  .mobile-sort-caption{font-size:11px;font-weight:750;color:#778e9f;white-space:nowrap;flex:none}
+  .mobile-sort-item{display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:0 0 auto;min-height:42px;padding:9px 12px;border:1px solid #dfe9ed;border-radius:9px;background:white;font-size:12px;font-weight:700;color:#61798c;white-space:nowrap;cursor:pointer}
+  .mobile-sort-item[aria-pressed="true"]{background:#e4f4f6;border-color:#85c4cc;color:#096e7d}
+  .mobile-sort-item .sort-indicator{color:inherit}
+  .mobile-sort-item:focus-visible{outline:2px solid #168496;outline-offset:2px}
+  .table-scroll{overflow:visible}
+  #priceTable,#estimateTable{display:block;width:100%;border-collapse:separate;white-space:normal}
+  #priceTable thead,#estimateTable thead{display:none}
+  #priceTable tbody,#estimateTable tbody{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:15px 13px 6px}
+  #priceTable tbody tr.quote-row,#estimateTable tbody tr.quote-row{display:grid;grid-template-columns:minmax(0,1fr);gap:0;width:100%;padding:14px;border:1px solid #dce8ed;border-radius:13px;background:#fff;box-shadow:0 3px 13px rgba(27,69,88,.055);min-width:0}
+  #priceTable tbody tr.quote-row.selected,#estimateTable tbody tr.quote-row.selected{background:#f5fbfc;border-color:#91c7cd}
+  #priceTable tbody tr.quote-row td,#estimateTable tbody tr.quote-row td{border-top:0;min-width:0;padding:0}
+  #priceTable tbody tr.quote-row td.model-cell,#estimateTable tbody tr.quote-row td.model-cell{display:block;padding:0 0 8px;text-align:left;overflow-wrap:anywhere;white-space:normal}
+  #priceTable td.model-cell strong,#estimateTable td.model-cell strong{font-size:14px;line-height:1.55;margin:0 0 3px;overflow-wrap:anywhere}
+  #priceTable td.model-cell small,#estimateTable td.model-cell small{font-size:11px}
+  #priceTable tbody td.provider-cell,#estimateTable tbody td.provider-cell{display:flex;align-items:center;flex-wrap:wrap;gap:7px;font-size:12px;padding:0 0 10px!important;border-bottom:1px solid #edf1f4}
+  #priceTable tbody td.provider-cell .type-tag,#estimateTable tbody td.provider-cell .type-tag{margin-left:0}
+  #priceTable tbody td.num,#estimateTable tbody td.estimate-cost{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:43px;padding:8px 0!important;font-size:13px;text-align:right}
+  #priceTable tbody td.num::before,#estimateTable tbody td.estimate-cost::before,#priceTable tbody td.source-cell::before,#estimateTable tbody td.source-cell::before{content:attr(data-label);font-size:11px;color:#8095a3;font-weight:650;white-space:nowrap;flex:none;text-align:left}
+  #priceTable tbody td.num .price-with-info,#estimateTable tbody td.estimate-cost .price-with-info{margin-left:auto;justify-content:flex-end;min-width:0;gap:5px}
+  #priceTable tbody td.num .money-number,#estimateTable tbody td.estimate-cost .money-number{font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  #priceTable tbody td.sum,#estimateTable tbody td.estimate-cost[data-label="50 次"]{margin:7px 0 1px;padding:10px!important;border-radius:9px;background:#e9f6f7;color:#116d7e}
+  #priceTable tbody td.source-cell,#estimateTable tbody td.source-cell{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0 2px!important}
+  #priceTable tbody td.open-arrow,#estimateTable tbody td.open-arrow{display:flex;align-items:center;justify-content:flex-end;font-size:13px;color:#167c8f;padding:7px 0 0!important}
+  #priceTable tbody td.open-arrow::before,#estimateTable tbody td.open-arrow::before{content:"查看明細";font-size:11px;margin-right:7px}
+  .mobile-load-more:not([hidden]){display:block;width:calc(100% - 26px);min-height:47px;margin:9px auto 14px;border:1px solid #b8d7dc;background:#f0f9fa;color:#16768a;border-radius:10px;font-size:13px;font-weight:750;cursor:pointer}
+  .mobile-load-more:focus-visible{outline:2px solid #167c90;outline-offset:2px}
+  .table-footer{padding:13px 16px;font-size:11px;line-height:1.7;gap:6px}
+  .load-notice{margin:0 13px 9px}
+  .detail-layout{gap:12px;margin:14px 0}
+  .detail-card{padding:20px 16px;border-radius:13px;overflow:hidden}
+  .details-header{flex-direction:column;gap:9px}
+  .details-header strong{overflow-wrap:anywhere}
+  #modelDetail,#peerDetail{max-width:100%;min-width:0}
+  #modelDetail table.mini-table,#peerDetail table.mini-table{display:block;white-space:normal}
+  #modelDetail table.mini-table thead,#peerDetail table.mini-table thead{display:none}
+  #modelDetail table.mini-table tbody,#peerDetail table.mini-table tbody{display:grid;gap:9px}
+  #modelDetail table.mini-table tbody tr,#peerDetail table.mini-table tbody tr{display:block;padding:10px 12px;border:1px solid #e2ebef;border-radius:10px;background:#fafcfd}
+  #modelDetail table.mini-table tbody tr.selected,#peerDetail table.mini-table tbody tr.selected{background:#edf7f8;border-color:#9bcbd1}
+  #modelDetail table.mini-table tbody td,#peerDetail table.mini-table tbody td{display:flex;justify-content:space-between;align-items:center;gap:7px;padding:8px 0;min-width:0;border:0;white-space:normal;font-size:12px}
+  #modelDetail table.mini-table tbody td::before,#peerDetail table.mini-table tbody td::before{content:attr(data-label);flex:none;font-size:11px;color:#8a9eac;font-weight:650}
+  #modelDetail table.mini-table tbody td:first-child,#peerDetail table.mini-table tbody td:first-child{font-weight:750;overflow-wrap:anywhere}
+  #modelDetail table.mini-table tbody td .price-with-info,#peerDetail table.mini-table tbody td .price-with-info{margin-left:auto}
+  .scenario-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .scenario-grid label{font-size:12px;line-height:1.45}
+  .scenario-grid small{min-height:32px;line-height:1.45;font-size:10px}
+  .scenario-grid input{min-width:0;min-height:48px;padding:11px 10px;font-size:16px}
+  .scenario-help{line-height:1.7}
+  .scenario-summary{grid-template-columns:minmax(0,1fr);gap:8px}
+  .scenario-summary>div{display:flex;align-items:baseline;gap:6px;min-width:0;padding:12px 14px}
+  .scenario-summary span{flex:1 1 auto;font-size:12px;min-width:0}
+  .scenario-summary strong{font-size:21px}
+  .scenario-summary small{font-size:10px}
+  .estimate-round-summary{grid-template-columns:minmax(0,1fr);gap:8px}
+  .estimate-round-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px}
+  .estimate-round-item span{font-size:12px}
+  .estimate-round-item strong{font-size:14px;margin:0;text-align:right}
+  .estimate-detail-line{gap:6px}
+  .estimate-detail-line span{overflow-wrap:anywhere}
+  .estimate-detail-line strong{flex:none;white-space:nowrap}
+  .note-card{padding:20px 16px}
+  .site-footer{padding:20px 5px;gap:8px;line-height:1.6}
+}
+@media(max-width:360px){
+  .scenario-grid{gap:7px}
+  .scenario-grid input{padding:9px 8px}
+  .scenario-grid small{font-size:9px}
+  .mobile-sort-item{padding:9px 11px}
+}

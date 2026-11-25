@@ -119,12 +119,23 @@
         </div>
         <p class="billing-note">命中情境假設每次請求的「固定 Prompt＋歷史訊息」都已預先快取並成功命中；RAG 與新輸入以一般價格計算。無快取讀取報價者顯示「—」。</p>
       </div>
+
+        <div class="mobile-sort-bar" role="group" aria-label="手機版欄位排序">
+          <span class="mobile-sort-caption">排序</span>
+          <button type="button" class="mobile-sort-item" data-sort-header="model" data-sort="model" aria-pressed="false">模型<span class="sort-indicator" aria-hidden="true">↕</span></button>
+          <button type="button" class="mobile-sort-item" data-sort-header="provider" data-sort="provider" aria-pressed="false">平台<span class="sort-indicator" aria-hidden="true">↕</span></button>
+          <button type="button" class="mobile-sort-item" data-sort-header="cost1" data-sort="cost1" aria-pressed="true">1 次<span class="sort-indicator" aria-hidden="true">↑</span></button>
+          <button type="button" class="mobile-sort-item" data-sort-header="cost10" data-sort="cost10" aria-pressed="false">10 次<span class="sort-indicator" aria-hidden="true">↕</span></button>
+          <button type="button" class="mobile-sort-item" data-sort-header="cost50" data-sort="cost50" aria-pressed="false">50 次<span class="sort-indicator" aria-hidden="true">↕</span></button>
+          <button type="button" class="mobile-sort-item" data-sort-header="source" data-sort="source" aria-pressed="false">來源<span class="sort-indicator" aria-hidden="true">↕</span></button>
+        </div>
       <div class="load-notice" id="loadNotice" role="status" aria-live="polite">正在載入模型與平台價格…</div>
       <div class="table-scroll"><table id="estimateTable">
         <thead><tr><th data-sort-header="model" aria-sort="none"><button type="button" class="sort-button" data-sort="model">模型 / 系列<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th data-sort-header="provider" aria-sort="none"><button type="button" class="sort-button" data-sort="provider">API 供應平台<span class="sort-indicator" aria-hidden="true">↕</span></button></th>
           <th class="num" data-sort-header="cost1" aria-sort="ascending"><button type="button" class="sort-button" data-sort="cost1">1 次<span class="sort-indicator" aria-hidden="true">↑</span></button></th><th class="num" data-sort-header="cost10" aria-sort="none"><button type="button" class="sort-button" data-sort="cost10">10 次<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th class="num" data-sort-header="cost50" aria-sort="none"><button type="button" class="sort-button" data-sort="cost50">50 次<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th data-sort-header="source" aria-sort="none"><button type="button" class="sort-button" data-sort="source">資料來源<span class="sort-indicator" aria-hidden="true">↕</span></button></th><th aria-label="開啟詳情"></th></tr></thead>
         <tbody id="estimateRows"></tbody>
       </table></div>
+      <button id="estimateMore" type="button" class="mobile-load-more" hidden>顯示更多報價</button>
       <div class="empty-state" id="emptyState" hidden><div class="empty-icon">◇</div><h3 id="emptyTitle">尚無可比較資料</h3><p id="emptyText">請調整篩選條件。</p></div>
       <footer class="table-footer"><span id="shownCount">載入中…</span><span id="rateFooter">臺幣為參考匯率換算，不含匯差、稅或未建檔的平台費。</span></footer>
     </section>

@@ -2,7 +2,7 @@
 
 const state = {
   quotes: [], history: [], family: 'all', search: '', provider: 'all',
-  sort: 'model', sortDir: 'asc', selectedQuoteId: null, feePolicies: null, plan: 'standard',
+  sort: 'model', sortDir: 'asc', mobileShown: 24, selectedQuoteId: null, feePolicies: null, plan: 'standard',
 };
 const $ = id => document.getElementById(id);
 // Display only: the underlying numbers used for comparison remain unrounded.
@@ -115,6 +115,7 @@ function setupListeners() {
     const button = event.target.closest('[data-family]');
     if (!button) return;
     state.family = button.dataset.family;
+    state.mobileShown = 24;
     for (const chip of document.querySelectorAll('.chip')) {
       const active = chip === button;
       chip.classList.toggle('active', active);
@@ -122,18 +123,24 @@ function setupListeners() {
     }
     renderTable();
   });
-  $('search').addEventListener('input', event => { state.search = event.target.value.trim().toLowerCase(); renderTable(); });
-  $('provider').addEventListener('change', event => { state.provider = event.target.value; renderTable(); });
-  $('priceTable').addEventListener('click', event => {
+  $('search').addEventListener('input', event => { state.search = event.target.value.trim().toLowerCase(); state.mobileShown = 24; renderTable(); });
+  $('provider').addEventListener('change', event => { state.provider = event.target.value; state.mobileShown = 24; renderTable(); });
+  $('prices').addEventListener('click', event => {
     const button = event.target.closest('button[data-sort]');
     if (button && toggleSort(button.dataset.sort)) renderTable();
   });
+  $('priceMore').addEventListener('click', () => {
+    state.mobileShown += 24;
+    renderTable();
+  });
+  window.matchMedia('(max-width:750px)').addEventListener('change', renderTable);
   $('inputTokens').addEventListener('input', renderCalculator);
   $('outputTokens').addEventListener('input', renderCalculator);
   $('billingPlans').addEventListener('click', event => {
     const button = event.target.closest('[data-plan]');
     if (!button || state.plan === button.dataset.plan) return;
     state.plan = button.dataset.plan;
+    state.mobileShown = 24;
     hideFeePopover();
     for (const option of document.querySelectorAll('[data-plan]')) {
       const active = option === button;
@@ -153,17 +160,20 @@ function setupListeners() {
 const PRICE_SORT_KEYS = ['model','provider','input','output','total','source'];
 function toggleSort(key) {
   if (!PRICE_SORT_KEYS.includes(key)) return false;
+  state.mobileShown = 24;
   if (state.sort === key) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
   else { state.sort = key; state.sortDir = 'asc'; }
   return true;
 }
 function updateSortHeaders() {
-  for (const th of document.querySelectorAll('#priceTable th[data-sort-header]')) {
-    const active = th.dataset.sortHeader === state.sort;
-    th.setAttribute('aria-sort',active ? (state.sortDir === 'asc' ? 'ascending':'descending') : 'none');
-    const indicator=th.querySelector('.sort-indicator');
+  for (const header of document.querySelectorAll('#priceTable th[data-sort-header], #prices .mobile-sort-item[data-sort-header]')) {
+    const active = header.dataset.sortHeader === state.sort;
+    const mobile = header.tagName === 'BUTTON';
+    if (mobile) header.setAttribute('aria-pressed',String(active));
+    else header.setAttribute('aria-sort',active ? (state.sortDir === 'asc' ? 'ascending':'descending') : 'none');
+    const indicator=header.querySelector('.sort-indicator');
     if(indicator) indicator.textContent=active ? (state.sortDir === 'asc' ? '↑':'↓'):'↕';
-    const button=th.querySelector('button[data-sort]');
+    const button=mobile ? header : header.querySelector('button[data-sort]');
     if(button) button.title=active
       ? '目前'+(state.sortDir==='asc'?'升序':'降序')+'，點擊改為'+(state.sortDir==='asc'?'降序':'升序')
       : '點擊依此欄升序排列';
@@ -211,7 +221,10 @@ function renderTable() {
   const tbody = $('priceRows');
   hideFeePopover();
   tbody.replaceChildren();
-  $('shownCount').textContent = `${quotes.length.toLocaleString('zh-TW')} 筆報價`;
+  const mobile = window.matchMedia('(max-width:750px)').matches;
+  const shownQuotes = mobile ? quotes.slice(0,state.mobileShown) : quotes.slice(0,2000);
+  $('priceMore').hidden = !mobile || shownQuotes.length >= quotes.length;
+  $('shownCount').textContent = `${quotes.length.toLocaleString('zh-TW')} 筆報價` + (mobile && quotes.length ? ` · 已顯示 ${shownQuotes.length.toLocaleString('zh-TW')} 筆` : '');
   $('emptyState').hidden = quotes.length > 0;
   if (!state.quotes.length) {
     $('emptyTitle').textContent = '尚無價格資料';
@@ -222,7 +235,7 @@ function renderTable() {
   }
   // No external data is ever interpolated into HTML markup.
   const fragment = document.createDocumentFragment();
-  for (const q of quotes.slice(0, 2000)) {
+  for (const q of shownQuotes) {
     const tr = el('tr', 'quote-row' + (state.selectedQuoteId === q.id ? ' selected' : ''));
     tr.tabIndex = 0;
     tr.setAttribute('aria-label', `查看 ${q.model_id} 在 ${q.provider} 的比較`);
@@ -233,10 +246,14 @@ function renderTable() {
     const inputCell = el('td', 'num dollar');
     const outputCell = el('td', 'num dollar');
     const totalCell = el('td', 'num sum');
+    inputCell.setAttribute('data-label','輸入 / 百萬');
+    outputCell.setAttribute('data-label','輸出 / 百萬');
+    totalCell.setAttribute('data-label','合計 / 百萬');
     appendPrice(inputCell, q, priceValue(q, 'input_usd_m'));
     appendPrice(outputCell, q, priceValue(q, 'output_usd_m'));
     appendPrice(totalCell, q, priceValue(q, 'total'));
-    const sourceCell = el('td');
+    const sourceCell = el('td', 'source-cell');
+    sourceCell.setAttribute('data-label','資料來源');
     const src = el('span', 'source-tag' + (q.verification === 'provider_api' ? ' direct' : '') + (q.status !== 'current' ? ' stale' : ''),
       q.status === 'anomaly_hold' ? '異常暫緩' : q.status === 'stale' ? '前次有效值' : q.verification === 'provider_api' ? '平台 API' : '社群彙整');
     sourceCell.append(src);
@@ -245,7 +262,7 @@ function renderTable() {
     const choose = () => { state.selectedQuoteId = q.id; renderTable(); renderDetail();
       if (window.matchMedia('(max-width: 750px)').matches) $('comparison').scrollIntoView({behavior:'smooth'});
     };
-    tr.addEventListener('click', choose);
+    tr.addEventListener('click', event => { if (!event.target.closest('.fee-info-button')) choose(); });
     tr.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); choose(); } });
     fragment.appendChild(tr);
   }
@@ -277,10 +294,15 @@ function renderDetail() {
     if (q.id === chosen.id) row.className = 'selected';
     const inputCell = el('td');
     const outputCell = el('td');
+    inputCell.setAttribute('data-label','輸入 / 百萬');
+    outputCell.setAttribute('data-label','輸出 / 百萬');
     appendPrice(inputCell, q, priceValue(q, 'input_usd_m'));
     appendPrice(outputCell, q, priceValue(q, 'output_usd_m'));
-    row.append(el('td', '', q.provider), inputCell, outputCell);
+    const peerProvider = el('td', '', q.provider);
+    peerProvider.setAttribute('data-label','平台');
+    row.append(peerProvider, inputCell, outputCell);
     const anchorCell = el('td');
+    anchorCell.setAttribute('data-label','來源');
     const a = el('a', '', '報價 ↗');
     a.href = safeLink(q.source_url); a.target = '_blank'; a.rel = 'noopener noreferrer';
     anchorCell.append(a); row.append(anchorCell);
