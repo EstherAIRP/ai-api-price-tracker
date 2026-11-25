@@ -90,7 +90,7 @@ test('Both main tables have six clickable columns, and no standalone sort dropdo
    ['estimate.html',['model','provider','cost1','cost10','cost50','source']]
   ]){
     const html=fs.readFileSync(path.join(root,'site',file),'utf8');
-    const found=[...html.matchAll(/data-sort-header="([^"]+)"/g)].map(x=>x[1]);
+    const found=[...html.matchAll(/<th[^>]*data-sort-header="([^"]+)"/g)].map(x=>x[1]);
     assert.deepEqual(found,keys);
     for(const key of keys){
       assert.match(html,new RegExp('class="sort-button" data-sort="'+key+'"'));
