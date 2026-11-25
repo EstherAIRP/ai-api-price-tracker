@@ -18,6 +18,16 @@ class PriceParserTests(unittest.TestCase):
         self.assertEqual(prices.price('-5'), None)
         self.assertEqual(prices.price('Infinity'), None)
 
+    def test_context_window_value_validation(self):
+        self.assertEqual(prices.token_limit(131072), 131072)
+        self.assertEqual(prices.token_limit(200000), 200000)
+        self.assertIsNone(prices.token_limit(None))
+        self.assertIsNone(prices.token_limit(0))
+        self.assertIsNone(prices.token_limit(-1))
+        self.assertIsNone(prices.token_limit(True))
+        self.assertIsNone(prices.token_limit(0.5))
+        self.assertIsNone(prices.token_limit(10**12))
+
     def test_strict_canonical_model(self):
         self.assertEqual(prices.normalized_id('x-ai/grok-4'), 'xai/grok-4')
         self.assertEqual(prices.normalized_id('gpt-5', provider='openai'), 'openai/gpt-5')
@@ -28,7 +38,7 @@ class PriceParserTests(unittest.TestCase):
     def test_catalog_parser_limits_sources(self):
         sample = {
             'openai': {'name':'OpenAI','models':{
-                'gpt-5':{'name':'GPT-5','cost':{'input':1.25,'output':10}},
+                'gpt-5':{'name':'GPT-5','limit':{'context':128000,'input':100000,'output':16384},'cost':{'input':1.25,'output':10}},
                 'audio-model':{'cost':{'input':1.5,'output':2}},
             }},
             'openrouter': {'name':'OpenRouter','models':{
@@ -44,10 +54,15 @@ class PriceParserTests(unittest.TestCase):
         self.assertEqual(official['model_id'], 'openai/gpt-5')
         self.assertEqual(official['provider_type'], 'official_channel')
         self.assertEqual(official['verification'], 'community_catalog')
+        self.assertEqual(official['context_window_tokens'], 128000)
+        self.assertEqual(official['max_output_tokens'], 16384)
+        self.assertIsNone(next(q for q in quotes if q['provider']=='OpenRouter')['context_window_tokens'])
 
     def test_openrouter_unit_conversion(self):
         sample = {'data':[
-            {'id':'anthropic/claude-sonnet-4','name':'Claude Sonnet','pricing':{
+            {'id':'anthropic/claude-sonnet-4','name':'Claude Sonnet',
+             'context_length':200000, 'top_provider':{'context_length':131072,'max_completion_tokens':16384},
+             'pricing':{
                 'prompt':'0.000003','completion':'0.000015'}},
             {'id':'openai/gpt-free','name':'Free','pricing':{
                 'prompt':'0','completion':'0'}},
@@ -58,6 +73,9 @@ class PriceParserTests(unittest.TestCase):
         self.assertEqual(rows[0]['input_usd_m'],3.0)
         self.assertEqual(rows[0]['output_usd_m'],15.0)
         self.assertEqual(rows[0]['verification'],'provider_api')
+        self.assertEqual(rows[0]['context_window_tokens'],131072)
+        self.assertEqual(rows[0]['max_output_tokens'],16384)
+        self.assertIsNone(rows[1]['context_window_tokens'])
         self.assertEqual(rows[1]['input_usd_m'],0)
 
     def test_abnormal_changes(self):
@@ -76,7 +94,8 @@ class PublishTests(unittest.TestCase):
             hist = base/'site'/'data'/'history.json'
             original = prices.make_quote('OpenAI','openai/gpt-5','GPT-5',1.0,5.0,
                 source='Models.dev（社群彙整）', source_url='https://models.dev', collected_at=NOW)
-            new = dict(original, input_usd_m=1.2, output_usd_m=4.5)
+            new = dict(original, input_usd_m=1.2, output_usd_m=4.5,
+                       context_window_tokens=128000,max_output_tokens=16384)
             prices.write_json(pub,{'quotes':[original]})
             prices.write_json(stage, {'collected_at':prices.iso_time(),'quotes':[new],
                                       'sources':[{'name':'Models.dev','ok':True,'count':1}]})
@@ -84,6 +103,7 @@ class PublishTests(unittest.TestCase):
                 prices.publish()
             result = json.loads(pub.read_text('utf-8'))
             self.assertEqual(result['quotes'][0]['input_usd_m'],1.2)
+            self.assertEqual(result['quotes'][0]['context_window_tokens'],128000)
             self.assertEqual(len(json.loads(hist.read_text('utf-8'))['events']),1)
             prices.write_json(stage, {'collected_at':prices.iso_time(),
                                       'quotes':[dict(original, input_usd_m=0.01)],

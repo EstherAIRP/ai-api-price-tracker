@@ -79,9 +79,9 @@ test('Mobile cards retain individual price labels and source labels',()=>{
   const a=harness('app.js');
   vm.runInContext('renderTable()',a.box);
   const row=a.doc.getElementById('priceRows').children[0].children[0];
-  assert.equal(row.children[2].attributes['data-label'],'輸入 / 百萬');
-  assert.equal(row.children[3].attributes['data-label'],'輸出 / 百萬');
-  assert.equal(row.children[4].attributes['data-label'],'合計 / 百萬');
+  assert.equal(row.children[2].attributes['data-label'],'上下文限制');
+  assert.equal(row.children[3].attributes['data-label'],'輸入 / 百萬');
+  assert.equal(row.children[4].attributes['data-label'],'輸出 / 百萬');
   assert.equal(row.children[5].attributes['data-label'],'資料來源');
   const e=harness('estimate.js');
   vm.runInContext("renderTable({prompt:1,user:1,rag:1,historyPer:1,historyCount:1,output:1})",e.box);
@@ -90,7 +90,7 @@ test('Mobile cards retain individual price labels and source labels',()=>{
 });
 test('Mobile sort controls exist for both catalogs and no menu or desktop sort is removed',()=>{
   for(const [page,keys] of [
-    ['index.html',['model','provider','input','output','total','source']],
+    ['index.html',['model','provider','context','input','output','source']],
     ['estimate.html',['model','provider','cost1','cost10','cost50','source']]
   ]){
     const html=fs.readFileSync(path.join(root,'site',page),'utf8');

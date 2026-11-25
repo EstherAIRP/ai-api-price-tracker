@@ -1,4 +1,5 @@
 name: Daily AI API prices
+# Daily snapshots also refresh source-provided context and max output limits.
 
 on:
   push:

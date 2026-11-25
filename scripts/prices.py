@@ -121,6 +121,18 @@ def price(value: object, *, per_token: bool = False) -> float | None:
         return None
 
 
+def token_limit(value: object) -> int | None:
+    """Accept only positive whole-token limits published by an upstream model API."""
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value if 0 < value <= 100_000_000 else None
+    if isinstance(value, float) and value.is_integer():
+        number = int(value)
+        return number if 0 < number <= 100_000_000 else None
+    return None
+
+
 def family_from_id(canonical: str) -> str | None:
     bits = canonical.lower().split('/', 1)
     if len(bits) != 2:
@@ -157,7 +169,9 @@ def normalized_id(raw: str, explicit_canonical: str | None = None,
 def make_quote(provider: str, canonical: str, model_name: str, input_usd: float,
                output_usd: float, *, source: str, source_url: str,
                collected_at: str, cache_read: float | None = None,
-               cache_write: float | None = None) -> dict:
+               cache_write: float | None = None,
+               context_tokens: int | None = None,
+               max_output_tokens: int | None = None) -> dict:
     family = family_from_id(canonical)
     if not family:
         raise ValueError('Unsupported family')
@@ -169,6 +183,8 @@ def make_quote(provider: str, canonical: str, model_name: str, input_usd: float,
         'provider_type': 'official_channel' if official_channel else 'third_party',
         'input_usd_m': input_usd, 'output_usd_m': output_usd,
         'cache_read_usd_m': cache_read, 'cache_write_usd_m': cache_write,
+        'context_window_tokens': token_limit(context_tokens),
+        'max_output_tokens': token_limit(max_output_tokens),
         'source': source, 'source_url': source_url,
         'official_reference': OFFICIAL_PRICING[family],
         'verification': 'provider_api' if source == 'OpenRouter API' else 'community_catalog',
@@ -211,6 +227,7 @@ def parse_catalog(payload: object, collected_at: str) -> list[dict]:
             out_price = price(costs.get('output'))
             if in_price is None or out_price is None:
                 continue
+            limits = record.get('limit') if isinstance(record.get('limit'), dict) else {}
             quotes.append(make_quote(
                 display, canonical, str(record.get('name') or model_key),
                 in_price, out_price, source='Models.dev（社群彙整）',
@@ -218,6 +235,8 @@ def parse_catalog(payload: object, collected_at: str) -> list[dict]:
                 collected_at=collected_at,
                 cache_read=price(costs.get('cache_read')),
                 cache_write=price(costs.get('cache_write')),
+                context_tokens=limits.get('context'),
+                max_output_tokens=limits.get('output'),
             ))
     return quotes
 
@@ -237,6 +256,10 @@ def parse_openrouter(payload: object, collected_at: str) -> list[dict]:
         out = price(costs.get('completion'), per_token=True)
         if inp is None or out is None:
             continue
+        # Prefer the selected top provider's effective context when it is provided.
+        top_provider = model.get('top_provider') if isinstance(model.get('top_provider'), dict) else {}
+        effective_context = (token_limit(top_provider.get('context_length'))
+                             or token_limit(model.get('context_length')))
         rows.append(make_quote(
             'OpenRouter', canonical, str(model.get('name') or model['id']),
             inp, out, source='OpenRouter API',
@@ -244,6 +267,8 @@ def parse_openrouter(payload: object, collected_at: str) -> list[dict]:
             collected_at=collected_at,
             cache_read=price(costs.get('input_cache_read'), per_token=True),
             cache_write=price(costs.get('input_cache_write'), per_token=True),
+            context_tokens=effective_context,
+            max_output_tokens=top_provider.get('max_completion_tokens'),
         ))
     return rows
 

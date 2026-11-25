@@ -4,9 +4,9 @@
 
 ## 主要功能
 
-- 所有價格統一為 **USD / 1,000,000 文字 Token**（輸入與輸出分開顯示）。
+- 價格總覽依序顯示 **模型／平台 → 上下文限制 → 輸入單價 → 輸出單價 → 資料來源**。價格為 USD / 1,000,000 文字 Token，上下文限制由平台模型目錄獨立蒐集，缺值顯示「—」。
 - 可依模型系列、平台、關鍵字篩選及排序；可比較同一模型的多平台報價。
-- 網站僅提供 **Standard / Business** 方案切換：OpenRouter 的輸入、輸出、合計與成本試算顯示價格均直接乘上對應儲值費率倍率，並在價格旁提供驚嘆號說明；其他平台維持原始牌價。
+- 網站僅提供 **Standard / Business** 方案切換：OpenRouter 的輸入、輸出與成本試算顯示價格均直接乘上對應儲值費率倍率，並在價格旁提供驚嘆號說明；其他平台維持原始牌價。
 - 不顯示虛構或人工填入的價目表。若來源失敗，保留前次有效值並標示其狀態。
 - 09:00（Asia/Taipei）抓取暫存；12:00 自動驗證、發布並提交到 GitHub；無需人工批准。
 - **費用預估頁面（/estimate.html）**：保留全部模型與供應平台的查詢、分類和排序。填入 Prompt、使用者輸入、RAG、歷史訊息每則 Token × 則數、輸出 Token，即時比較 1／10／50 次成本。
@@ -62,12 +62,13 @@ python -m http.server --directory site 8080
 
 ## 資料來源與準確性
 
-- [Models.dev API](https://models.dev/api.json)：涵蓋多家模型及平台的**社群彙整**價格。記錄中的「官方通路」是指官方提供的 API 通路，不代表直接從官方價格頁擷取、即時核對或保證成交價。
-- [OpenRouter 模型 API](https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties)：當平台允許讀取時直接取得 OpenRouter 價格，取代相同模型的 Models.dev 彙整值。若回傳 HTTP 401，可在 **Settings → Secrets and variables → Actions** 設定選用的 `OPENROUTER_API_KEY`（不可提交到儲存庫）。
+- [Models.dev API](https://models.dev/api.json)：涵蓋多家模型及平台的**社群彙整**價格與上下文限制（`limit.context`）、最大輸出限制（`limit.output`）。記錄中的「官方通路」是指官方提供的 API 通路，不代表直接從官方價格頁擷取、即時核對或保證成交價。
+- [OpenRouter 模型 API](https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties)：當平台允許讀取時直接取得 OpenRouter 價格及上下文限制（優先使用 top provider 的有效限制，否則使用模型目錄值），取代相同模型的 Models.dev 彙整值。若回傳 HTTP 401，可在 **Settings → Secrets and variables → Actions** 設定選用的 `OPENROUTER_API_KEY`（不可提交到儲存庫）。
 - 官方價格參考： [OpenAI](https://openai.com/api/pricing/)、[Gemini](https://ai.google.dev/gemini-api/docs/pricing)、[Claude](https://www.anthropic.com/pricing#api)、[DeepSeek](https://api-docs.deepseek.com/quick_start/pricing)、[xAI](https://docs.x.ai/developers/models)。這些是**核對連結**，並非目前自動化直接擷取來源。
 
 ### 限制
 
+- 上下文長度不是最大輸出長度；OpenRouter 的實際路由供應商限制可能不同，未知數值不跨平台推估。
 - 目前只針對標準文字輸入與輸出的 Token 價格；不比較批次、長上下文、快取折扣、圖片／影片／音訊、各種額外手續費、免責／地域／稅金及定價級距。
 - 只有**明確的同一模型識別碼**才會被視為同一模型，不會用模糊名稱猜測。
 - 價格自動驗證使用變動幅度初篩；當價格從非零變為零、暴漲超過 5 倍或跌到不足 20% 時，首次先保留舊值並標示異常；若隔日獨立擷取再次取得相同候選價格，則自動接受。仍需日後改進來源交叉核對。

@@ -216,3 +216,14 @@ th.num .sort-button{margin-left:auto}
   .scenario-grid small{font-size:9px}
   .mobile-sort-item{padding:9px 11px}
 }
+
+/* Model metadata: context capacity is not a token price. */
+.context-value{font-size:12px;font-weight:760;color:#167c8f;font-variant-numeric:tabular-nums;white-space:nowrap}
+.context-value.unknown{color:#a6b4bd;font-weight:500}
+#priceTable th[data-sort-header="context"] .sort-button{justify-content:flex-end}
+@media(max-width:750px){
+  #priceTable tbody td.context-limit{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:43px;margin:7px 0 1px;padding:10px!important;border-radius:9px;background:#e9f6f7}
+  #priceTable tbody td.context-limit::before{content:attr(data-label);font-size:11px;color:#718a98;font-weight:650;white-space:nowrap}
+  #priceTable tbody td.context-limit .context-value{margin-left:auto;text-align:right;font-size:14px}
+  #modelDetail td.context-limit .context-value{margin-left:auto}
+}

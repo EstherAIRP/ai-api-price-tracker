@@ -86,7 +86,7 @@ for(const [file,func,column] of [
 }
 test('Both main tables have six clickable columns, and no standalone sort dropdown',()=>{
   for(const [file,keys] of [
-   ['index.html',['model','provider','input','output','total','source']],
+   ['index.html',['model','provider','context','input','output','source']],
    ['estimate.html',['model','provider','cost1','cost10','cost50','source']]
   ]){
     const html=fs.readFileSync(path.join(root,'site',file),'utf8');

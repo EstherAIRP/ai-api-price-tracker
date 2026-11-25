@@ -13,6 +13,16 @@ const dollars = value => {
 };
 const exactDollars = value => typeof value === 'number' && Number.isFinite(value) && value >= 0
   ? '未四捨五入：USD $' + Number(value.toPrecision(12)).toString() : '金額資料無效';
+const contextTokens = q => Number.isSafeInteger(q?.context_window_tokens) && q.context_window_tokens > 0
+  ? q.context_window_tokens : null;
+const contextText = n => {
+  if (!Number.isSafeInteger(n) || n <= 0) return '—';
+  if (n % 1_000_000 === 0) return (n / 1_000_000) + 'M';
+  if (n % 1_048_576 === 0) return (n / 1_048_576) + 'M';
+  if (n % 1000 === 0) return (n / 1000).toLocaleString('en-US') + 'K';
+  if (n % 1024 === 0) return (n / 1024).toLocaleString('en-US') + 'K';
+  return n.toLocaleString('en-US');
+};
 const formatStamp = value => value ? new Intl.DateTimeFormat('zh-TW', {
   timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit',
   hour: '2-digit', minute: '2-digit', hour12: false,
@@ -157,7 +167,7 @@ function setupListeners() {
   window.addEventListener('resize', hideFeePopover);
 }
 
-const PRICE_SORT_KEYS = ['model','provider','input','output','total','source'];
+const PRICE_SORT_KEYS = ['model','provider','context','input','output','source'];
 function toggleSort(key) {
   if (!PRICE_SORT_KEYS.includes(key)) return false;
   state.mobileShown = 24;
@@ -193,10 +203,15 @@ function filteredQuotes() {
   });
   const direction=state.sortDir==='desc'?-1:1;
   const tie=(a,b)=>a.model_id.localeCompare(b.model_id)||a.provider.localeCompare(b.provider);
-  const priceKey={input:'input_usd_m',output:'output_usd_m',total:'total'}[state.sort];
+  const priceKey={input:'input_usd_m',output:'output_usd_m'}[state.sort];
   items.sort((a,b)=>{
     if(priceKey){
       const av=priceValue(a,priceKey),bv=priceValue(b,priceKey);
+      if(av===null&&bv!==null)return 1;
+      if(bv===null&&av!==null)return -1;
+      if(av!==null&&bv!==null&&av!==bv)return (av-bv)*direction;
+    }else if(state.sort==='context'){
+      const av=contextTokens(a),bv=contextTokens(b);
       if(av===null&&bv!==null)return 1;
       if(bv===null&&av!==null)return -1;
       if(av!==null&&bv!==null&&av!==bv)return (av-bv)*direction;
@@ -243,22 +258,25 @@ function renderTable() {
     modelCell.append(el('strong', '', q.model_id), el('small', '', q.family));
     const providerCell = el('td', 'provider-cell', q.provider);
     providerCell.append(el('span', 'type-tag', q.provider_type === 'official_channel' ? '官方通路＊' : '第三方'));
+    const contextCell = el('td', 'num context-limit');
+    const context = contextTokens(q);
+    contextCell.setAttribute('data-label','上下文限制');
+    const contextValue = el('span',context === null ? 'context-value unknown' : 'context-value',contextText(context));
+    contextValue.title = context === null ? '平台未提供上下文長度' : context.toLocaleString('en-US')+' Token';
+    contextCell.append(contextValue);
     const inputCell = el('td', 'num dollar');
     const outputCell = el('td', 'num dollar');
-    const totalCell = el('td', 'num sum');
     inputCell.setAttribute('data-label','輸入 / 百萬');
     outputCell.setAttribute('data-label','輸出 / 百萬');
-    totalCell.setAttribute('data-label','合計 / 百萬');
     appendPrice(inputCell, q, priceValue(q, 'input_usd_m'));
     appendPrice(outputCell, q, priceValue(q, 'output_usd_m'));
-    appendPrice(totalCell, q, priceValue(q, 'total'));
     const sourceCell = el('td', 'source-cell');
     sourceCell.setAttribute('data-label','資料來源');
     const src = el('span', 'source-tag' + (q.verification === 'provider_api' ? ' direct' : '') + (q.status !== 'current' ? ' stale' : ''),
       q.status === 'anomaly_hold' ? '異常暫緩' : q.status === 'stale' ? '前次有效值' : q.verification === 'provider_api' ? '平台 API' : '社群彙整');
     sourceCell.append(src);
     const arrow = el('td', 'open-arrow', '↗');
-    tr.append(modelCell, providerCell, inputCell, outputCell, totalCell, sourceCell, arrow);
+    tr.append(modelCell, providerCell, contextCell, inputCell, outputCell, sourceCell, arrow);
     const choose = () => { state.selectedQuoteId = q.id; renderTable(); renderDetail();
       if (window.matchMedia('(max-width: 750px)').matches) $('comparison').scrollIntoView({behavior:'smooth'});
     };
@@ -272,7 +290,7 @@ function renderDetail() {
   const chosen = state.quotes.find(q => q.id === state.selectedQuoteId);
   if (!chosen) return;
   const peers = state.quotes.filter(q => q.model_id === chosen.model_id)
-    .sort((a,b) => (priceValue(a,'total') ?? Infinity) - (priceValue(b,'total') ?? Infinity));
+    .sort((a,b) => (priceValue(a,'input_usd_m') ?? Infinity) - (priceValue(b,'input_usd_m') ?? Infinity));
   const detail = $('modelDetail');
   detail.className = '';
   detail.replaceChildren();
@@ -286,12 +304,18 @@ function renderDetail() {
   const table = el('table', 'mini-table');
   const thead = el('thead');
   const headerRow = el('tr');
-  for (const name of ['平台', '輸入', '輸出', '來源']) headerRow.append(el('th', '', name));
+  for (const name of ['平台', '上下文', '輸入', '輸出', '來源']) headerRow.append(el('th', '', name));
   thead.append(headerRow);
   const tbody = el('tbody');
   for (const q of peers) {
     const row = el('tr');
     if (q.id === chosen.id) row.className = 'selected';
+    const limit = contextTokens(q);
+    const limitCell = el('td', 'context-limit');
+    limitCell.setAttribute('data-label','上下文');
+    const limitText = el('span','context-value',contextText(limit));
+    limitText.title = limit === null ? '平台未提供上下文長度' : limit.toLocaleString('en-US')+' Token';
+    limitCell.append(limitText);
     const inputCell = el('td');
     const outputCell = el('td');
     inputCell.setAttribute('data-label','輸入 / 百萬');
@@ -300,7 +324,7 @@ function renderDetail() {
     appendPrice(outputCell, q, priceValue(q, 'output_usd_m'));
     const peerProvider = el('td', '', q.provider);
     peerProvider.setAttribute('data-label','平台');
-    row.append(peerProvider, inputCell, outputCell);
+    row.append(peerProvider, limitCell, inputCell, outputCell);
     const anchorCell = el('td');
     anchorCell.setAttribute('data-label','來源');
     const a = el('a', '', '報價 ↗');
