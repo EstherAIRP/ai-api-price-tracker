@@ -2015,6 +2015,48 @@
       "id": "together::deepseek/deepseek-v4.1-flash-1017",
       "input_usd_m": 0.6,
       "output_usd_m": 2.4
+    },
+    {
+      "at": "2026-11-26T21:24:01+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-flash-0731",
+      "input_usd_m": 0.06,
+      "output_usd_m": 0.18
+    },
+    {
+      "at": "2026-11-26T21:24:01+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-pro",
+      "input_usd_m": 0.888188,
+      "output_usd_m": 1.5082
+    },
+    {
+      "at": "2026-11-26T21:24:01+08:00",
+      "id": "openrouter::deepseek/deepseek-v4.1-flash-1017",
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-26T21:24:01+08:00",
+      "id": "openai::openai/gpt-6-astra-healthcare",
+      "input_usd_m": 10.0,
+      "output_usd_m": 50.0
+    },
+    {
+      "at": "2026-11-26T21:24:01+08:00",
+      "id": "openai::openai/gpt-6.1-sol-healthcare",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-26T21:24:01+08:00",
+      "id": "openai::openai/gpt-6.2-astra-healthcare",
+      "input_usd_m": 8.0,
+      "output_usd_m": 40.0
+    },
+    {
+      "at": "2026-11-26T21:24:01+08:00",
+      "id": "openai::openai/gpt-6.2-sol-healthcare",
+      "input_usd_m": 2.0,
+      "output_usd_m": 10.0
     }
   ],
   "schema_version": 1
