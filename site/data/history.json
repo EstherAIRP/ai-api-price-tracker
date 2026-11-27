@@ -2057,6 +2057,42 @@
       "id": "openai::openai/gpt-6.2-sol-healthcare",
       "input_usd_m": 2.0,
       "output_usd_m": 10.0
+    },
+    {
+      "at": "2026-11-27T21:21:28+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-flash-0731",
+      "input_usd_m": 0.047,
+      "output_usd_m": 0.3
+    },
+    {
+      "at": "2026-11-27T21:21:28+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-flash-vision-exp",
+      "input_usd_m": 0.2156,
+      "output_usd_m": 0.6468
+    },
+    {
+      "at": "2026-11-27T21:21:28+08:00",
+      "id": "openrouter::deepseek/deepseek-v4-pro-0813",
+      "input_usd_m": 0.0999,
+      "output_usd_m": 5.0
+    },
+    {
+      "at": "2026-11-27T21:21:28+08:00",
+      "id": "fireworks::deepseek/deepseek-v4.1-flash",
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-27T21:21:28+08:00",
+      "id": "fireworks::deepseek/deepseek-v4.1-flash-1017",
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2
+    },
+    {
+      "at": "2026-11-27T21:21:28+08:00",
+      "id": "together::deepseek/deepseek-v4.1-flash-1017",
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2
     }
   ],
   "schema_version": 1
