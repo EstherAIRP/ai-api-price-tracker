@@ -1,8 +1,8 @@
 {
   "base": "USD",
   "quote": "TWD",
-  "usd_twd": 32.98256813,
-  "rate_date": "2026-11-26",
+  "usd_twd": 32.94981153,
+  "rate_date": "2026-11-27",
   "source": "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json",
-  "updated_at": "2026-11-26T13:24:02.298162+00:00"
+  "updated_at": "2026-11-28T08:45:18.830031+00:00"
 }
